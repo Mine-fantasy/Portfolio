@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatisation Scripts - Portfolio Marc Boone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">SISR Portfolio</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="index.html#compétences" class="nav-link">Compétences</a></li>
+                <li><a href="index.html#projets" class="nav-link active">Projets</a></li>
+                <li><a href="index.html#veille" class="nav-link">Veille</a></li>
+                <li><a href="index.html#cv" class="nav-link">CV</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Projet Detail Section -->
+    <section id="projet-detail">
+        <div class="container">
+            <a href="index.html#projets" class="back-button">← Retour aux projets</a>
+            
+            <div class="projet-detail-container">
+                <div class="projet-detail-header">
+                    <div class="projet-detail-image">
+                        <img src="images/projet-automatisation.jpg" alt="Automatisation Scripts" class="detail-img">
+                    </div>
+                    <div class="projet-detail-title">
+                        <h1>Automatisation Scripts</h1>
+                        <p class="projet-date">2024 - 2025</p>
+                    </div>
+                </div>
+
+                <div class="projet-detail-content">
+                    <div class="detail-section">
+                        <h2>Description du Projet</h2>
+                        <p>
+                            Développement d'une suite de scripts pour automatiser les tâches administratives IT 
+                            répétitives. Ce projet visait à améliorer l'efficacité opérationnelle en réduisant 
+                            le travail manuel et les risques d'erreurs.
+                        </p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Objectifs Réalisés</h2>
+                        <ul class="detail-list">
+                            <li>Script PowerShell pour automatiser les créations de comptes utilisateurs</li>
+                            <li>Script Bash pour la gestion des permissions de fichiers en masse</li>
+                            <li>Automatisation des sauvegardes de bases de données</li>
+                            <li>Script de monitoring des ressources système (CPU, RAM, disque)</li>
+                            <li>Automatisation de rapports de logs et alertes</li>
+                            <li>Script de déploiement d'applications automatisé</li>
+                            <li>Gestion des tâches planifiées avec cron et Task Scheduler</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Technologies Utilisées</h2>
+                        <div class="technologies">
+                            <span class="tech-tag">PowerShell</span>
+                            <span class="tech-tag">Bash</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Cron Jobs</span>
+                            <span class="tech-tag">Task Scheduler</span>
+                            <span class="tech-tag">Logs & Monitoring</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Résultats et Compétences Acquises</h2>
+                        <p>
+                            Grâce à ce projet, j'ai maîtrisé la programmation de scripts pour l'automatisation 
+                            des tâches administratives. J'ai consolidé mes compétences en PowerShell et Bash, 
+                            et développé une bonne compréhension des concepts de planification et monitoring.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024-2025 Marc Boone - Portfolio BTS SIO SISR</p>
+        <p>Tous droits réservés</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
