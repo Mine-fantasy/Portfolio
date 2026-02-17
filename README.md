@@ -3,12 +3,12 @@ Il a été conçu pour mettre en valeur mon savoir-faire technique ainsi que ma 
 
 À travers ce portfolio, vous pourrez découvrir :
 
--Mes compétences techniques
+* Mes compétences techniques
 
--Mes projets réalisés
+* Mes projets réalisés
 
--Les technologies que j’utilise
+* Les technologies que j’utilise
 
--Mes informations de contact
+* Mes informations de contact
 
 Ce projet reflète mon évolution et mon approche du développement : rigueur, curiosité et amélioration continue.
