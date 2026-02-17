@@ -1,3 +1,46 @@
+// ========== THEME TOGGLE ==========
+
+// Load saved theme from localStorage
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'space') {
+        document.body.classList.add('space-mode');
+    }
+}
+
+// Update theme toggle button display
+function updateThemeToggleButton() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        if (document.body.classList.contains('space-mode')) {
+            themeToggle.textContent = '☀️';
+            themeToggle.title = 'Basculer vers le mode jour';
+        } else {
+            themeToggle.textContent = '🌙';
+            themeToggle.title = 'Basculer vers le mode cosmic';
+        }
+    }
+}
+
+// Load theme on page load
+loadSavedTheme();
+updateThemeToggleButton();
+
+// Theme toggle functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('space-mode');
+            const isSpaceMode = document.body.classList.contains('space-mode');
+            localStorage.setItem('theme', isSpaceMode ? 'space' : 'light');
+            updateThemeToggleButton();
+            // Reinitialize particles with new theme
+            initParticles();
+        });
+    }
+});
+
 // ========== CANVAS ANIMATION ==========
 
 // Canvas Background Animation
@@ -12,25 +55,77 @@ let particles = [];
 
 class Particle {
     constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        const isSpaceMode = document.body.classList.contains('space-mode');
+        
+        if (isSpaceMode) {
+            // Star particles for space mode
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.opacity = Math.random() * 0.7 + 0.3;
+            this.speedX = (Math.random() - 0.5) * 0.2;
+            this.speedY = (Math.random() - 0.5) * 0.1;
+            this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+            this.color = this.getStarColor();
+            this.twinklePhase = Math.random() * Math.PI * 2;
+        } else {
+            // Original cyan particles
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 0.5 - 0.25;
+            this.speedY = Math.random() * 0.5 - 0.25;
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+    }
+
+    getStarColor() {
+        const colors = [
+            'rgba(255, 255, 255, ',  // white
+            'rgba(212, 165, 255, ',  // purple
+            'rgba(30, 144, 255, ',   // dodger blue
+            'rgba(100, 200, 255, ',  // light blue
+            'rgba(230, 190, 255, '   // light purple
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     draw() {
-        ctx.fillStyle = `rgba(6, 182, 212, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        const isSpaceMode = document.body.classList.contains('space-mode');
+        
+        if (isSpaceMode) {
+            // Draw star with glow for space mode
+            this.twinklePhase += this.twinkleSpeed;
+            const twinkleOpacity = this.opacity * (0.5 + 0.5 * Math.sin(this.twinklePhase));
+            
+            // Outer glow
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3);
+            gradient.addColorStop(0, this.color + (twinkleOpacity * 0.6) + ')');
+            gradient.addColorStop(1, this.color + '0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Star core
+            ctx.fillStyle = this.color + twinkleOpacity + ')';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        } else {
+            // Original particle drawing
+            ctx.fillStyle = this.color + this.opacity + ')';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
     update() {
         this.x += this.speedX;
         this.y += this.speedY;
 
+        // Wrap around screen
         if (this.x > canvas.width) this.x = 0;
         if (this.x < 0) this.x = canvas.width;
         if (this.y > canvas.height) this.y = 0;
@@ -41,7 +136,10 @@ class Particle {
 // Initialize particles
 function initParticles() {
     particles = [];
-    for (let i = 0; i < 50; i++) {
+    const isSpaceMode = document.body.classList.contains('space-mode');
+    const particleCount = isSpaceMode ? 150 : 50;
+    
+    for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }
 }
@@ -50,6 +148,34 @@ function initParticles() {
 function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    const isSpaceMode = document.body.classList.contains('space-mode');
+    
+    // Draw fog clouds for space mode
+    if (isSpaceMode) {
+        // Atmospheric fog effect
+        const fogGradient = ctx.createRadialGradient(
+            canvas.width * 0.3, canvas.height * 0.4, 0,
+            canvas.width * 0.3, canvas.height * 0.4, canvas.width * 0.8
+        );
+        fogGradient.addColorStop(0, 'rgba(138, 43, 226, 0.08)');
+        fogGradient.addColorStop(1, 'rgba(138, 43, 226, 0)');
+        
+        ctx.fillStyle = fogGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Second fog layer
+        const fogGradient2 = ctx.createRadialGradient(
+            canvas.width * 0.7, canvas.height * 0.6, 0,
+            canvas.width * 0.7, canvas.height * 0.6, canvas.width * 0.6
+        );
+        fogGradient2.addColorStop(0, 'rgba(30, 144, 255, 0.06)');
+        fogGradient2.addColorStop(1, 'rgba(30, 144, 255, 0)');
+        
+        ctx.fillStyle = fogGradient2;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    // Draw and update particles
     for (let particle of particles) {
         particle.update();
         particle.draw();
