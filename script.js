@@ -332,4 +332,104 @@ scrollTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+// ===== KONAMI CODE -> MATRIX HACKER MODE (no index.html changes) =====
+(function () {
+  const konami = [
+    "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+    "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
+    "b","a"
+  ];
+  let buffer = [];
+
+  function toggleHackerMode() {
+    const isOn = document.body.classList.toggle("hacker-mode");
+    if (isOn) startMatrix();
+    else stopMatrix();
+  }
+
+  // Listen Konami
+  window.addEventListener("keydown", (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    buffer.push(key);
+    buffer = buffer.slice(-konami.length);
+
+    if (buffer.join(",") === konami.join(",")) {
+      buffer = [];
+      toggleHackerMode();
+    }
+  });
+
+  // ===== Matrix rain =====
+  let canvas, ctx, animId, intervalId;
+  let columns = 0;
+  let drops = [];
+  const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  function createCanvas() {
+    if (canvas) return;
+    canvas = document.createElement("canvas");
+    canvas.id = "matrix-canvas";
+    document.body.appendChild(canvas);
+    ctx = canvas.getContext("2d", { alpha: true });
+    resize();
+    window.addEventListener("resize", resize);
+  }
+
+  function resize() {
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const fontSize = 16;
+    columns = Math.floor(canvas.width / fontSize);
+    drops = Array.from({ length: columns }, () => Math.floor(Math.random() * canvas.height / fontSize));
+    ctx.font = `${fontSize}px monospace`;
+  }
+
+  function draw() {
+    if (!ctx || !canvas) return;
+
+    // Fading background (trace effect)
+    ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "rgba(16, 185, 129, 0.95)"; // vert "terminal"
+    const fontSize = 16;
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = chars[Math.floor(Math.random() * chars.length)];
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+
+      ctx.fillText(text, x, y);
+
+      // Reset drop randomly
+      if (y > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]+= 0.3; // vitesse de chute
+    }
+
+    animId = requestAnimationFrame(draw);
+  }
+
+  function startMatrix() {
+    createCanvas();
+    if (animId) cancelAnimationFrame(animId);
+    animId = requestAnimationFrame(draw);
+  }
+
+  function stopMatrix() {
+    if (animId) cancelAnimationFrame(animId);
+    animId = null;
+
+    // Option : enlever le canvas complètement
+    if (canvas) {
+      canvas.remove();
+      canvas = null;
+      ctx = null;
+      window.removeEventListener("resize", resize);
+    }
+  }
+})();
 

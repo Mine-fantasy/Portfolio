@@ -920,16 +920,16 @@
         }
 
         footer a {
-            color: #9ca3af;          
-            text-decoration: none;
+        color: #9ca3af;          /* même couleur que le texte du footer */
+        text-decoration: none;
         }
 
         footer a:visited {
-            color: #9ca3af;          
+        color: #9ca3af;          /* empêche le violet */
         }
 
         footer a:hover {
-            text-decoration: underline;
+        text-decoration: underline;
         }
 
 
@@ -1328,17 +1328,30 @@
             width: 24px;
             height: 24px;
             fill: white;
-
         }
-        footer a,
-        footer a:visited {
-            color: #9ca3af !important;
-            text-decoration: none;
-        }
-        
-        footer a:hover {
-            color: #06b6d4 !important;
-            text-decoration: underline;
+        /* ===== KONAMI: HACKER / MATRIX MODE ===== */
+        body.hacker-mode {
+        background: #000 !important;
+        color: #a7f3d0; /* léger vert */
         }
 
+        body.hacker-mode .bg-overlay {
+        background: rgba(0, 0, 0, 0.65) !important;
+        }
 
+        /* Optionnel : assombrir la nav en mode hacker */
+        body.hacker-mode nav {
+        background: rgba(0, 0, 0, 0.9) !important;
+        border-bottom: 1px solid rgba(55, 248, 7, 0.25) !important;
+        }
+
+        /* Canvas Matrix créé par JS */
+        #matrix-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;          /* au-dessus du fond */
+        pointer-events: none; /* ne bloque pas les clics */
+        opacity: 0.85;
+        }
