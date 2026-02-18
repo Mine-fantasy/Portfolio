@@ -1330,3 +1330,15 @@
             fill: white;
 
         }
+        footer a,
+        footer a:visited {
+            color: #9ca3af !important;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: #06b6d4 !important;
+            text-decoration: underline;
+        }
+
+
