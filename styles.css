@@ -920,16 +920,16 @@
         }
 
         footer a {
-        color: #9ca3af;          /* même couleur que le texte du footer */
-        text-decoration: none;
+            color: #9ca3af;          
+            text-decoration: none;
         }
 
         footer a:visited {
-        color: #9ca3af;          /* empêche le violet */
+            color: #9ca3af;          
         }
 
         footer a:hover {
-        text-decoration: underline;
+            text-decoration: underline;
         }
 
 
@@ -1328,4 +1328,5 @@
             width: 24px;
             height: 24px;
             fill: white;
+
         }
