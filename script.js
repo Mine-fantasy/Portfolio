@@ -513,7 +513,7 @@ function ensureFxOverlay() {
         setTimeout(() => {
           if (bootEl) bootEl.remove();
           bootEl = null;
-          openTerminal();
+          openTerminalInteractive();
         }, 550);
       }
     }, 120);
@@ -689,5 +689,223 @@ function ensureFxOverlay() {
       window.removeEventListener("resize", resize);
     }
   }
+
+
+  // ===== Interactive Terminal Version (sudo -i -> password -> admin -> virus) =====
+  // Change this password to whatever you want:
+  const ADMIN_PASSWORD = "konami";
+
+  let isAdmin = false;
+  let awaitingPassword = false;
+  let passwordAttempts = 0;
+  const MAX_PASSWORD_ATTEMPTS = 3;
+
+  function openTerminalInteractive() {
+    if (terminalEl) return;
+
+    terminalEl = document.createElement("div");
+    terminalEl.id = "hacker-terminal";
+    terminalEl.innerHTML = `
+      <div class="terminal-panel" role="dialog" aria-label="Terminal">
+        <div class="terminal-header">
+          <span>${isAdmin ? "root@chartres:~" : "user@chartres:~"}</span>
+          <button class="close-btn" id="termClose">Fermer</button>
+        </div>
+        <div class="terminal-body" id="termBody">
+          ${renderPromptLine()}
+        </div>
+      </div>
+    `;
+    document.body.appendChild(terminalEl);
+
+    const closeBtn = document.getElementById("termClose");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        if (terminalEl) terminalEl.remove();
+        terminalEl = null;
+      });
+    }
+
+    focusTerminalInput();
+    printTerminalMessage("Tape 'help' pour voir les commandes.");
+  }
+
+  function renderPromptLine() {
+    const who = isAdmin ? "root@chartres" : "user@chartres";
+    const prompt = `<span class="prompt">${who}</span>:<span class="prompt">~</span>$ `;
+    const inputType = awaitingPassword ? "password" : "text";
+    const inputClass = awaitingPassword ? "terminal-input terminal-input-password" : "terminal-input";
+    return `
+      <div class="term-input-line">
+        ${prompt}
+        <input type="${inputType}" id="terminalInput" class="${inputClass}" autocomplete="off" autocapitalize="off" spellcheck="false" />
+      </div>
+    `;
+  }
+
+  function refreshTerminalHeader() {
+    const headerSpan = terminalEl?.querySelector(".terminal-header span");
+    if (headerSpan) headerSpan.textContent = isAdmin ? "root@chartres:~" : "user@chartres:~";
+  }
+
+  function focusTerminalInput() {
+    const input = document.getElementById("terminalInput");
+    if (!input) return;
+
+    setTimeout(() => input.focus(), 0);
+
+    input.onkeydown = (e) => {
+      if (e.key === "Enter") {
+        const value = input.value;
+        input.value = "";
+
+        if (awaitingPassword) {
+          handlePassword(value);
+        } else {
+          handleCommand(value);
+        }
+      }
+    };
+  }
+
+  function printCommandEcho(text) {
+    const termBody = document.getElementById("termBody");
+    if (!termBody) return;
+
+    const who = isAdmin ? "root@chartres" : "user@chartres";
+    const div = document.createElement("div");
+    div.innerHTML = `<span class="prompt">${who}</span>:<span class="prompt">~</span>$ ${escapeHtml(text)}`;
+    termBody.insertBefore(div, termBody.lastElementChild);
+    termBody.scrollTop = termBody.scrollHeight;
+  }
+
+  function printTerminalMessage(text) {
+    const termBody = document.getElementById("termBody");
+    if (!termBody) return;
+
+    const div = document.createElement("div");
+    div.textContent = text;
+    termBody.insertBefore(div, termBody.lastElementChild);
+    termBody.scrollTop = termBody.scrollHeight;
+  }
+
+  function rebuildPromptLine() {
+    const termBody = document.getElementById("termBody");
+    if (!termBody) return;
+
+    const last = termBody.lastElementChild;
+    if (last) last.remove();
+
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = renderPromptLine().trim();
+    termBody.appendChild(wrapper.firstElementChild);
+
+    refreshTerminalHeader();
+    focusTerminalInput();
+  }
+
+  function handlePassword(raw) {
+    const termBody = document.getElementById("termBody");
+    if (!termBody) return;
+
+    const div = document.createElement("div");
+    div.textContent = "[sudo] password: ********";
+    termBody.insertBefore(div, termBody.lastElementChild);
+
+    const password = (raw ?? "").trim();
+    if (password === ADMIN_PASSWORD) {
+      awaitingPassword = false;
+      passwordAttempts = 0;
+      isAdmin = true;
+
+      printTerminalMessage("ACCESS ADMIN GRANTED");
+      rebuildPromptLine();
+      return;
+    }
+
+    passwordAttempts += 1;
+    printTerminalMessage("Sorry, try again.");
+
+    if (passwordAttempts >= MAX_PASSWORD_ATTEMPTS) {
+      awaitingPassword = false;
+      passwordAttempts = 0;
+      printTerminalMessage("sudo: 3 incorrect password attempts");
+      rebuildPromptLine();
+      return;
+    }
+
+    awaitingPassword = true;
+    rebuildPromptLine();
+  }
+
+  function handleCommand(raw) {
+    const input = (raw ?? "").trim();
+    const command = input.toLowerCase();
+
+    if (!input) return;
+
+    printCommandEcho(input);
+
+    if (command === "help") {
+      if (isAdmin) {
+        printTerminalMessage("Commandes : virus, clear, exit, help");
+      } else {
+        printTerminalMessage("Commandes : sudo -i, clear, help");
+      }
+      return;
+    }
+
+    if (command === "clear") {
+      clearTerminal();
+      return;
+    }
+
+    if (!isAdmin) {
+      if (command === "sudo -i") {
+        awaitingPassword = true;
+        passwordAttempts = 0;
+        printTerminalMessage("[sudo] password for user@chartres:");
+        rebuildPromptLine();
+        return;
+      }
+
+      if (command === "virus") {
+        printTerminalMessage("Permission denied. Passe en admin : sudo -i");
+        return;
+      }
+
+      printTerminalMessage("Commande inconnue. Tape 'help'.");
+      return;
+    }
+
+    if (command === "exit") {
+      isAdmin = false;
+      awaitingPassword = false;
+      passwordAttempts = 0;
+      printTerminalMessage("Session admin fermée.");
+      rebuildPromptLine();
+      return;
+    }
+
+    if (command === "virus") {
+      printTerminalMessage("ACCESSING SECURE DATABASE...");
+      setTimeout(() => {
+        window.location.href = "virus.html";
+      }, 1200);
+      return;
+    }
+
+    printTerminalMessage("Commande inconnue. Tape 'help'.");
+  }
+
+  function clearTerminal() {
+    const termBody = document.getElementById("termBody");
+    if (!termBody) return;
+
+    termBody.innerHTML = renderPromptLine();
+    refreshTerminalHeader();
+    focusTerminalInput();
+  }
+
 })();
 

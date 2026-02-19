@@ -2974,3 +2974,13 @@
   64% { transform: skew(-1deg); }
   66% { transform: skew(0deg); }
 }
+.terminal-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: rgba(167, 243, 208, 0.95);
+  font-family: inherit;
+  font-size: 13px;
+  width: 60%;
+}
+
