@@ -341,10 +341,268 @@ scrollTopBtn.addEventListener('click', () => {
   ];
   let buffer = [];
 
+    // --- UI refs / timers (Konami boot + terminal) ---
+  let bootEl = null;
+  let terminalEl = null;
+  let fxEl = null;
+  let bootTimer = null;
+  let typeTimer = null;
+
+  // 3 propositions de “scénarios” terminal : on alterne à chaque activation
+  const terminalScripts = [
+    {
+      title: "root@chartres:~",
+      lines: [
+        "sudo -s",
+        "whoami",
+        "root",
+        "ACCESS ADMIN GRANTED",
+        "Welcome, operator."
+      ],
+    },
+    {
+      title: "sys@chartres:/var/log",
+      lines: [
+        "tail -n 3 auth.log",
+        "AUTH: token validated :: scope=superuser",
+        "AUTH: policy override injected",
+        "PRIVILEGES ELEVATED",
+        "SESSION: 0xDEADBEEF"
+      ],
+    },
+    {
+      title: "admin@chartres:/",
+      lines: [
+        "ssh admin@localhost",
+        "Password: ********",
+        "ACCESS DENIED",
+        "retry --force",
+        "ACCESS ADMIN GRANTED",
+        "SYSTEM ONLINE"
+      ],
+    }
+  ];
+
+  function pickTerminalScript() {
+    const key = "konami_terminal_variant";
+    const current = parseInt(localStorage.getItem(key) || "0", 10);
+    const next = (current + 1) % terminalScripts.length;
+    localStorage.setItem(key, String(next));
+    return terminalScripts[current % terminalScripts.length];
+  }
+
   function toggleHackerMode() {
     const isOn = document.body.classList.toggle("hacker-mode");
-    if (isOn) startMatrix();
-    else stopMatrix();
+    if (isOn) {
+      startMatrix();
+      ensureFxOverlay();
+      startBootSequence();
+    } else {
+      stopMatrix();
+      cleanupBootAndTerminal();
+    }
+  }
+
+  function cleanupBootAndTerminal() {
+    if (bootTimer) clearInterval(bootTimer);
+    bootTimer = null;
+
+    if (typeTimer) clearInterval(typeTimer);
+    typeTimer = null;
+
+    if (bootEl) bootEl.remove();
+    bootEl = null;
+
+    if (terminalEl) terminalEl.remove();
+    terminalEl = null;
+
+    if (fxEl) fxEl.remove();
+    fxEl = null;
+  }
+
+
+function ensureFxOverlay() {
+  if (fxEl) return;
+  fxEl = document.createElement("div");
+  fxEl.id = "hacker-fx";
+  fxEl.setAttribute("aria-hidden", "true");
+  document.body.appendChild(fxEl);
+}
+
+  function ensureBootUI() {
+    if (bootEl) return;
+
+    bootEl = document.createElement("div");
+    bootEl.id = "hacker-boot";
+    bootEl.innerHTML = `
+      <div class="boot-panel" role="dialog" aria-label="Hacker boot">
+        <div class="boot-header">
+          <span class="dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </span>
+          <span>INIT :: PRIV-ESC / KERNEL HANDSHAKE</span>
+        </div>
+        <div class="boot-body">
+          <div class="boot-line" id="bootLine">Establishing secure channel...</div>
+          <div class="progress-wrap" aria-hidden="true">
+            <div class="progress-bar" id="bootBar"></div>
+          </div>
+          <div class="progress-meta">
+            <span id="bootPct">0%</span>
+            <span id="bootStatus">IDLE</span>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(bootEl);
+  }
+
+  function startBootSequence() {
+    cleanupBootAndTerminal(); // évite les doublons si Konami relancé vite
+    ensureBootUI();
+
+    const bootLine = document.getElementById("bootLine");
+    const bootBar = document.getElementById("bootBar");
+    const bootPct = document.getElementById("bootPct");
+    const bootStatus = document.getElementById("bootStatus");
+
+    const lines = [
+      "Establishing secure channel...",
+      "Bypassing firewall ruleset...",
+      "Injecting payload into auth service...",
+      "Escalating privileges...",
+      "Decrypting token vault...",
+      "Syncing access control lists...",
+      "Finalizing session..."
+    ];
+
+    const statuses = ["RUN", "EXEC", "OK", "WARN", "SYNC", "PATCH"];
+
+    let p = 0;
+    let i = 0;
+
+    if (bootStatus) bootStatus.textContent = "RUN";
+    if (bootLine) bootLine.textContent = lines[0];
+    if (bootBar) bootBar.style.width = "0%";
+    if (bootPct) bootPct.textContent = "0%";
+
+    bootTimer = setInterval(() => {
+      const step = Math.random() * 6 + 2; // 2..8
+      p = Math.min(100, p + step);
+
+      if (bootBar) bootBar.style.width = `${p}%`;
+      if (bootPct) bootPct.textContent = `${Math.floor(p)}%`;
+
+      if (Math.random() > 0.6) {
+        i = Math.min(lines.length - 1, i + 1);
+        if (bootLine) bootLine.textContent = lines[i];
+      }
+      if (Math.random() > 0.65) {
+        if (bootStatus) bootStatus.textContent = statuses[Math.floor(Math.random() * statuses.length)];
+      }
+
+      if (p >= 100) {
+        clearInterval(bootTimer);
+        bootTimer = null;
+
+        if (bootStatus) bootStatus.textContent = "OK";
+        if (bootLine) bootLine.textContent = "Boot complete. Launching terminal...";
+
+        setTimeout(() => {
+          if (bootEl) bootEl.remove();
+          bootEl = null;
+          openTerminal();
+        }, 550);
+      }
+    }, 120);
+  }
+
+  function openTerminal() {
+    if (terminalEl) return;
+
+    const scenario = pickTerminalScript();
+
+    terminalEl = document.createElement("div");
+    terminalEl.id = "hacker-terminal";
+    terminalEl.innerHTML = `
+      <div class="terminal-panel" role="dialog" aria-label="Terminal">
+        <div class="terminal-header">
+          <span>${escapeHtml(scenario.title)}</span>
+          <button class="close-btn" id="termClose">Fermer</button>
+        </div>
+        <div class="terminal-body" id="termBody">
+          <div><span class="prompt">root@chartres</span>:<span class="prompt">~</span>$ <span id="termText"></span><span class="cursor"></span></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(terminalEl);
+
+    const closeBtn = document.getElementById("termClose");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        if (terminalEl) terminalEl.remove();
+        terminalEl = null;
+      });
+    }
+
+    typeTerminalLines(scenario.lines);
+  }
+
+  function typeTerminalLines(lines) {
+    const termText = document.getElementById("termText");
+    const termBody = document.getElementById("termBody");
+    if (!termText || !termBody) return;
+
+    let lineIndex = 0;
+
+    const printLine = (text, done) => {
+      termText.textContent = "";
+      let c = 0;
+
+      if (typeTimer) clearInterval(typeTimer);
+      typeTimer = setInterval(() => {
+        c++;
+        termText.textContent = text.slice(0, c);
+        termBody.scrollTop = termBody.scrollHeight;
+
+        if (c >= text.length) {
+          clearInterval(typeTimer);
+          typeTimer = null;
+          done();
+        }
+      }, 22);
+    };
+
+    const next = () => {
+      if (lineIndex >= lines.length) return;
+
+      const current = lines[lineIndex++];
+      printLine(current, () => {
+        const div = document.createElement("div");
+        const safe = escapeHtml(current);
+        const isGranted = current.toUpperCase().includes("ACCESS ADMIN GRANTED");
+        div.innerHTML = `<span class="prompt">root@chartres</span>:<span class="prompt">~</span>$ ` +
+          (isGranted ? `<span class="glitch" data-text="${safe}">${safe}</span>` : safe);
+        termBody.insertBefore(div, termBody.lastElementChild);
+
+        termText.textContent = "";
+        setTimeout(next, 180);
+      });
+    };
+
+    next();
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (m) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[m]));
   }
 
   // Listen Konami
