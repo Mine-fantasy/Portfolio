@@ -2983,4 +2983,11 @@
   font-size: 13px;
   width: 60%;
 }
+.h1-icon{
+  width: 22px;
+  height: 22px;
+  vertical-align: -3px; /* ajuste l’alignement */
+  margin-right: 8px;
+}
+
 
