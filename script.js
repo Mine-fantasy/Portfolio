@@ -693,7 +693,7 @@ function ensureFxOverlay() {
 
   // ===== Interactive Terminal Version (sudo -i -> password -> admin -> virus) =====
   // Change this password to whatever you want:
-  const ADMIN_PASSWORD = "konami";
+  const ADMIN_PASSWORD = "root";
 
   let isAdmin = false;
   let awaitingPassword = false;
@@ -908,4 +908,4 @@ function ensureFxOverlay() {
   }
 
 })();
-
+term.classList.add("animate-in");

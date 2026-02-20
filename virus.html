@@ -1,32 +1,413 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Documentation Secrète</title>
-  <style>
-    body {
-      background: black;
-      color: #10b981;
-      font-family: monospace;
-      padding: 40px;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Base Classifiée — Virus Informatiques</title>
+
+  <!-- Styles globaux du site -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Petite police monospace fallback (sans dépendance externe) -->
 </head>
-<body>
+<script>
+  // Désamorce tout calque fixe qui pourrait voler les clics
+  window.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("canvas, [id*='canvas'], [class*='overlay'], [id*='overlay']")
+      .forEach(el => el.style.pointerEvents = "none");
 
-  <h1>
-  <img src="assets/virus.png" alt="Virus" class="h1-icon">
-  Virus Informatiques Célèbres
-  </h1>
+    // Assure que les boutons restent cliquables
+    document.querySelectorAll("#toggleFx, #toggleTerminal").forEach(b => {
+      b.style.pointerEvents = "auto";
+      b.style.position = "relative";
+      b.style.zIndex = "999999";
+    });
+    document.addEventListener("click", (e) => {
+  console.log("CLICK TARGET:", e.target);
+}, true);
+  });
+</script>
 
-<h2>ILOVEYOU (2000)</h2>
-<p>Se propageait via email avec une pièce jointe.</p>
+<body class="virus-page">
+  <!-- FX overlay (scanlines + noise) -->
+  <div class="virus-fx" aria-hidden="true"></div>
 
-<h2>WannaCry (2017)</h2>
-<p>Ransomware exploitant une faille Windows.</p>
+  <main class="virus-shell">
+    <header class="virus-header">
+      <div class="virus-logo-wrap">
+        <!-- Remplace le chemin si besoin : images/virus.png -->
+        <div class="virus-logo glitch">
+          <img src="images/virus.png" alt="Logo virus" />
+        </div>
+      </div>
 
-<h2>Stuxnet</h2>
-<p>Malware sophistiqué ciblant des infrastructures industrielles.</p>
+      <div class="virus-titleblock">
+        <p class="virus-kicker">ACCESS: <span class="ok">GRANTED</span> • CHANNEL: <span class="mono">SECURE</span> • CLEARANCE: <span class="warn">OMEGA</span></p>
+        <h1 class="virus-title">Virus Informatiques Célèbres</h1>
+        <p class="virus-subtitle">Dossier de synthèse (éducatif) — vecteurs, impacts, bonnes pratiques et hygiène cyber.</p>
+      </div>
 
+      <div class="virus-actions">
+        <button class="chip" id="toggleFx" type="button" aria-pressed="true">FX: ON</button>
+        <button class="chip" id="toggleTerminal" type="button" aria-expanded="false">Terminal</button>
+      </div>
+    </header>
+
+    <section class="virus-grid" aria-label="Fiches virus">
+      <article class="vcard" data-tags="email worm 2000">
+        <div class="vcard-top">
+          <div class="badge">Worm</div>
+          <div class="meta">
+            <h2>ILOVEYOU</h2>
+            <p class="year">2000</p>
+          </div>
+        </div>
+        <p class="desc">Se propageait via email avec une pièce jointe, provoquant des dégâts massifs par propagation rapide.</p>
+        <ul class="facts">
+          <li><span>Vecteur</span><span>Email + pièce jointe</span></li>
+          <li><span>Impact</span><span>Propagation mondiale</span></li>
+          <li><span>Leçon</span><span>Méfie-toi des pièces jointes</span></li>
+        </ul>
+      </article>
+
+      <article class="vcard" data-tags="ransomware windows 2017 exploit">
+        <div class="vcard-top">
+          <div class="badge danger">Ransomware</div>
+          <div class="meta">
+            <h2>WannaCry</h2>
+            <p class="year">2017</p>
+          </div>
+        </div>
+        <p class="desc">Ransomware exploitant une faille Windows pour chiffrer des fichiers et réclamer une rançon.</p>
+        <ul class="facts">
+          <li><span>Vecteur</span><span>Faille / propagation réseau</span></li>
+          <li><span>Impact</span><span>Chiffrement + indisponibilité</span></li>
+          <li><span>Leçon</span><span>Patchs & sauvegardes</span></li>
+        </ul>
+      </article>
+
+      <article class="vcard" data-tags="malware industrial targeted">
+        <div class="vcard-top">
+          <div class="badge">Targeted</div>
+          <div class="meta">
+            <h2>Stuxnet</h2>
+            <p class="year">—</p>
+          </div>
+        </div>
+        <p class="desc">Malware sophistiqué ciblant des infrastructures industrielles, connu pour son approche très spécifique.</p>
+        <ul class="facts">
+          <li><span>Cible</span><span>Infrastructures industrielles</span></li>
+          <li><span>Nature</span><span>Très avancé</span></li>
+          <li><span>Leçon</span><span>Segmentation & supervision</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel" aria-label="Vérification mot de passe">
+      <div class="panel-head">
+        <h2>Vérifier la sécurité d’un mot de passe</h2>
+        <p>Un test côté navigateur ne remplace pas une vraie politique côté serveur, mais il aide à choisir un mot de passe solide.</p>
+      </div>
+
+      <div class="pw">
+        <label class="pw-label" for="pwInput">Mot de passe</label>
+        <div class="pw-row">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Tape un mot de passe…" autocomplete="new-password" />
+          <button id="pwToggle" class="pw-btn" type="button" aria-label="Afficher/masquer">👁</button>
+        </div>
+
+        <div class="pw-meter" aria-hidden="true"><div id="pwBar" class="pw-bar"></div></div>
+        <div class="pw-readout">
+          <span id="pwLabel" class="pw-grade">—</span>
+          <span id="pwScore" class="pw-score">0/100</span>
+        </div>
+
+        <ul class="pw-checks" id="pwChecks" aria-live="polite"></ul>
+
+        <div class="pw-foot">
+          <button id="pwGen" class="chip" type="button">Générer</button>
+          <button id="pwCopy" class="chip" type="button">Copier</button>
+          <span id="pwMsg" class="pw-msg" role="status"></span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="virus-footer">
+      <p class="mono">/END-OF-FILE • checksum: <span id="checksum">—</span></p>
+      <p class="hint">Tip: ouvre le terminal et tape <span class="mono">help</span>.</p>
+    </footer>
+  </main>
+
+  <!-- Terminal overlay -->
+  <section class="term" id="term" aria-label="Terminal" hidden>
+    <div class="term-panel" role="dialog" aria-modal="false" aria-labelledby="termTitle">
+      <div class="term-head">
+        <span id="termTitle" class="mono">user@chartres:/virus$</span>
+        <button class="term-close" id="termClose" type="button">Fermer</button>
+      </div>
+      <div class="term-body" id="termBody" tabindex="0">
+        <div class="term-line">Bienvenue dans la console. Tape <span class="mono">help</span>.</div>
+        <div class="term-input">
+          <span class="prompt mono">user@chartres</span><span class="mono">:$</span>
+          <input id="termInput" class="term-in" type="text" autocomplete="off" spellcheck="false" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+/* ========= FX TOGGLE ========= */
+(function(){
+  const fx = document.querySelector(".virus-fx");
+  const btn = document.getElementById("toggleFx");
+  if(!fx || !btn) return;
+  btn.addEventListener("click", () => {
+    const on = !fx.classList.contains("off");
+    fx.classList.toggle("off");
+    btn.setAttribute("aria-pressed", String(!on));
+    btn.textContent = !on ? "FX: ON" : "FX: OFF";
+  });
+})();
+
+/* ========= CHECKSUM (petit Easter egg) ========= */
+(function(){
+  const el = document.getElementById("checksum");
+  if(!el) return;
+  // checksum "visuel" (pas une sécurité)
+  const s = Array.from({length: 8}, () => Math.floor(Math.random()*16).toString(16)).join("").toUpperCase();
+  el.textContent = s;
+})();
+
+/* ========= PASSWORD STRENGTH ========= */
+(function(){
+  const input = document.getElementById("pwInput");
+  const bar = document.getElementById("pwBar");
+  const label = document.getElementById("pwLabel");
+  const scoreEl = document.getElementById("pwScore");
+  const checks = document.getElementById("pwChecks");
+  const toggle = document.getElementById("pwToggle");
+  const gen = document.getElementById("pwGen");
+  const copy = document.getElementById("pwCopy");
+  const msg = document.getElementById("pwMsg");
+
+  if(!input || !bar || !label || !scoreEl || !checks || !toggle || !gen || !copy || !msg) return;
+
+  function setMsg(t){
+    msg.textContent = t;
+    if(t){
+      setTimeout(() => { if(msg.textContent === t) msg.textContent = ""; }, 1400);
+    }
+  }
+
+  function hasSeq(s){
+    const low = s.toLowerCase();
+    const bad = ["1234","2345","3456","4567","5678","6789","abcd","qwerty","azerty","password","admin","letmein"];
+    return bad.some(x => low.includes(x));
+  }
+
+  function scorePassword(pw){
+    const hints = [];
+    let score = 0;
+
+    if(!pw) return {score:0, grade:"Vide", hints:["Tape un mot de passe."]};
+
+    const len = pw.length;
+    if(len >= 16) score += 35;
+    else if(len >= 12) score += 26;
+    else if(len >= 8) score += 14;
+    else hints.push("Longueur: vise 12+ caractères (8 minimum).");
+
+    const hasLower = /[a-z]/.test(pw);
+    const hasUpper = /[A-Z]/.test(pw);
+    const hasDigit = /\d/.test(pw);
+    const hasSym   = /[^A-Za-z0-9]/.test(pw);
+
+    const variety = [hasLower,hasUpper,hasDigit,hasSym].filter(Boolean).length;
+    score += variety * 12;
+
+    if(!hasLower) hints.push("Ajoute une minuscule.");
+    if(!hasUpper) hints.push("Ajoute une majuscule.");
+    if(!hasDigit) hints.push("Ajoute un chiffre.");
+    if(!hasSym)   hints.push("Ajoute un caractère spécial.");
+
+    // pénalités
+    if(/^(.)\1+$/.test(pw)) { score -= 30; hints.push("Évite la répétition d’un seul caractère."); }
+    if(hasSeq(pw)) { score -= 25; hints.push("Évite les suites communes (1234, azerty, qwerty...)."); }
+    if(/\b\d{4}\b/.test(pw)) { score -= 10; hints.push("Évite une année seule (ex: 2024)."); }
+    if(/(.{2,})\1/.test(pw)) { score -= 10; hints.push("Évite les répétitions de blocs (ex: totoTOTO)."); }
+
+    score = Math.max(0, Math.min(100, score));
+
+    let grade = "Faible";
+    if(score >= 85) grade = "Très fort";
+    else if(score >= 65) grade = "Fort";
+    else if(score >= 45) grade = "Moyen";
+
+    return {score, grade, hints};
+  }
+
+  function render(){
+    const pw = input.value;
+    const {score, grade, hints} = scorePassword(pw);
+
+    bar.style.width = score + "%";
+    label.textContent = grade;
+    scoreEl.textContent = score + "/100";
+
+    // classes pour teinte
+    label.dataset.grade = grade;
+
+    const rows = [];
+    rows.push({ok: pw.length >= 12, text: "12+ caractères (recommandé)"});
+    rows.push({ok: /[a-z]/.test(pw), text: "Une minuscule"});
+    rows.push({ok: /[A-Z]/.test(pw), text: "Une majuscule"});
+    rows.push({ok: /\d/.test(pw), text: "Un chiffre"});
+    rows.push({ok: /[^A-Za-z0-9]/.test(pw), text: "Un symbole"});
+    rows.push({ok: !hasSeq(pw), text: "Pas de suite commune (azerty/1234…)"});
+
+    checks.innerHTML = "";
+    for(const r of rows){
+      const li = document.createElement("li");
+      li.className = r.ok ? "ok" : "no";
+      li.textContent = (r.ok ? "✓ " : "• ") + r.text;
+      checks.appendChild(li);
+    }
+
+    // hints “soft” en message
+    if(pw && hints.length){
+      setMsg(hints[0]);
+    }
+  }
+
+  toggle.addEventListener("click", () => {
+    input.type = input.type === "password" ? "text" : "password";
+    toggle.textContent = input.type === "password" ? "👁" : "🙈";
+  });
+
+  gen.addEventListener("click", () => {
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+    const symbols = "!@#$%^&*()-_=+[]{};:,.?";
+    const pick = (s) => s[Math.floor(Math.random()*s.length)];
+    let out = "";
+    // assure variété
+    out += pick("ABCDEFGHJKLMNPQRSTUVWXYZ");
+    out += pick("abcdefghijkmnopqrstuvwxyz");
+    out += pick("23456789");
+    out += pick(symbols);
+    for(let i=0;i<12;i++) out += pick(alphabet + symbols);
+    input.value = out;
+    render();
+    setMsg("Mot de passe généré.");
+  });
+
+  copy.addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(input.value || "");
+      setMsg(input.value ? "Copié." : "Rien à copier.");
+    }catch{
+      setMsg("Copie impossible (navigateur).");
+    }
+  });
+
+  input.addEventListener("input", render);
+  render();
+})();
+
+/* ========= MINI TERMINAL ========= */
+(function(){
+  const toggleBtn = document.getElementById("toggleTerminal");
+  const term = document.getElementById("term");
+  const closeBtn = document.getElementById("termClose");
+  const input = document.getElementById("termInput");
+  const body = document.getElementById("termBody");
+
+  if(!toggleBtn || !term || !closeBtn || !input || !body) return;
+
+  function open(){
+    term.hidden = false;
+    toggleBtn.setAttribute("aria-expanded","true");
+    setTimeout(() => input.focus(), 0);
+  }
+  function close(){
+    term.hidden = true;
+    toggleBtn.setAttribute("aria-expanded","false");
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    if(term.hidden) open(); else close();
+  });
+  closeBtn.addEventListener("click", close);
+
+  function print(text){
+    const div = document.createElement("div");
+    div.className = "term-line";
+    div.textContent = text;
+    body.insertBefore(div, body.lastElementChild);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function clear(){
+    body.innerHTML = "";
+    const hello = document.createElement("div");
+    hello.className = "term-line";
+    hello.innerHTML = 'Bienvenue dans la console. Tape <span class="mono">help</span>.';
+    body.appendChild(hello);
+
+    const inputLine = document.createElement("div");
+    inputLine.className = "term-input";
+    inputLine.innerHTML = '<span class="prompt mono">user@chartres</span><span class="mono">:$</span> <input id="termInput" class="term-in" type="text" autocomplete="off" spellcheck="false" />';
+    body.appendChild(inputLine);
+    // rebind input
+    const newInput = body.querySelector("#termInput");
+    newInput.addEventListener("keydown", onKey);
+    setTimeout(() => newInput.focus(), 0);
+  }
+
+  function onKey(e){
+    if(e.key !== "Enter") return;
+    const cmd = (e.target.value || "").trim();
+    e.target.value = "";
+    if(!cmd) return;
+
+    print("user@chartres:$ " + cmd);
+
+    const c = cmd.toLowerCase();
+    if(c === "help"){
+      print("Commandes: help, list, open wannacry, open iloveyou, open stuxnet, clear, exit");
+      return;
+    }
+    if(c === "list"){
+      print("ILOVEYOU (2000) • WannaCry (2017) • Stuxnet");
+      return;
+    }
+    if(c.startsWith("open ")){
+      const what = c.slice(5).trim();
+      const map = {
+        "wannacry": "WannaCry: ransomware exploitant une faille Windows. Défense: patch + sauvegardes + segmentation.",
+        "iloveyou": "ILOVEYOU: propagation email via pièce jointe. Défense: sensibilisation + filtrage + MFA.",
+        "stuxnet": "Stuxnet: malware ciblé industriel. Défense: segmentation OT/IT + supervision + contrôle USB."
+      };
+      print(map[what] || "Entrée inconnue.");
+      return;
+    }
+    if(c === "clear"){
+      clear();
+      return;
+    }
+    if(c === "exit"){
+      close();
+      return;
+    }
+    print("Commande inconnue. Tape help.");
+  }
+
+  input.addEventListener("keydown", onKey);
+
+  // fermer au clic en dehors
+  term.addEventListener("click", (e) => {
+    if(e.target === term) close();
+  });
+})();
+</script>
 </body>
 </html>
-
