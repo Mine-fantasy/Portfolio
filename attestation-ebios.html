@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation EBIOS - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <div class="logo-icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SISR Portfolio</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="attestation-page">
+        <div class="container">
+            <div class="attestation-header-nav">
+                <a href="index.html#Attestation" class="attestation-back-link">
+                    ← Retour aux attestations
+                </a>
+            </div>
+
+            <div class="attestation-container">
+                <h1 class="attestation-title">Attestation EBIOS</h1>
+
+                <!-- PDF Viewer -->
+                <div class="pdf-section">
+                    <embed src="pdf/Attestation-EBIOS.pdf" type="application/pdf">
+                </div>
+
+                <!-- Information Section -->
+                <div class="attestation-info-section">
+                    <h3>
+                        <svg class="attestation-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                        </svg>
+                        À propos de cette attestation
+                    </h3>
+                    <p>
+                        Cette attestation certifie ma participation au MOOC EBIOS Risk Manager de l'ANSSI, 
+                        <strong>une formation spécialisée sur la gestion des risques informatiques</strong>. 
+                        La méthodologie EBIOS Risk Manager est un référentiel français reconnu pour analyser 
+                        et gérer les risques de sécurité informatique de manière structurée et professionnelle.
+                    </p>
+                    <h3 style="margin-top: 1.5rem;">Points clés de la formation :</h3>
+                    <ul>
+                        <li>Méthodologie EBIOS pour la gestion des risques</li>
+                        <li>Analyse de risques informatiques</li>
+                        <li>Identification des scénarios de menace</li>
+                        <li>Évaluation des mesures de sécurité</li>
+                        <li>Documentation et traçabilité des risques</li>
+                        <li>Conformité aux standards internationaux</li>
+                    </ul>
+                </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Marc Boone - Portfolio BTS SIO SISR</p>
+        <p>Tous droits réservés | <a href="Mentions légales.html" class="footer-link">Mentions légales</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

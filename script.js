@@ -1,10 +1,11 @@
 // ========== THEME TOGGLE ==========
 
 // Load saved theme from localStorage
+// Default = dark, light-mode class active = thème clair
 function loadSavedTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    if (savedTheme === 'space') {
-        document.body.classList.add('space-mode');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
     }
 }
 
@@ -12,12 +13,12 @@ function loadSavedTheme() {
 function updateThemeToggleButton() {
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
-        if (document.body.classList.contains('space-mode')) {
-            themeToggle.textContent = '☀️';
-            themeToggle.title = 'Basculer vers le mode jour';
-        } else {
+        if (document.body.classList.contains('light-mode')) {
             themeToggle.textContent = '🌙';
-            themeToggle.title = 'Basculer vers le mode cosmic';
+            themeToggle.title = 'Basculer vers le mode sombre';
+        } else {
+            themeToggle.textContent = '☀️';
+            themeToggle.title = 'Basculer vers le mode clair';
         }
     }
 }
@@ -31,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('space-mode');
-            const isSpaceMode = document.body.classList.contains('space-mode');
-            localStorage.setItem('theme', isSpaceMode ? 'space' : 'light');
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
             updateThemeToggleButton();
             // Reinitialize particles with new theme
             initParticles();
@@ -43,19 +44,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ========== CANVAS ANIMATION ==========
 
-// Canvas Background Animation
 const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function isLightMode() {
+    return document.body.classList.contains('light-mode');
+}
+
+function isDarkMode() {
+    return !isLightMode();
+}
+
+function getCanvasWidth() {
+    return window.innerWidth;
+}
+
+function getCanvasHeight() {
+    return window.innerHeight;
+}
+
+function initCanvas() {
+    if (!canvas || !ctx) return;
+    canvas.width = getCanvasWidth();
+    canvas.height = getCanvasHeight();
+}
+
+initCanvas();
 
 // Create particles
 let particles = [];
 
 class Particle {
     constructor() {
-        const isSpaceMode = document.body.classList.contains('space-mode');
+        const isSpaceMode = isDarkMode();
         
         if (isSpaceMode) {
             // Star particles for space mode
@@ -91,7 +112,7 @@ class Particle {
     }
 
     draw() {
-        const isSpaceMode = document.body.classList.contains('space-mode');
+        const isSpaceMode = isDarkMode();
         
         if (isSpaceMode) {
             // Draw star with glow for space mode
@@ -135,8 +156,9 @@ class Particle {
 
 // Initialize particles
 function initParticles() {
+    if (!canvas || !ctx) return;
     particles = [];
-    const isSpaceMode = document.body.classList.contains('space-mode');
+    const isSpaceMode = isDarkMode();
     const particleCount = isSpaceMode ? 150 : 50;
     
     for (let i = 0; i < particleCount; i++) {
@@ -146,9 +168,10 @@ function initParticles() {
 
 // Animate particles
 function animateParticles() {
+    if (!ctx || !canvas) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    const isSpaceMode = document.body.classList.contains('space-mode');
+    const isSpaceMode = isDarkMode();
     
     // Draw fog clouds for space mode
     if (isSpaceMode) {
@@ -256,6 +279,7 @@ window.addEventListener('scroll', () => {
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.nav-links a');
+    if (!navLinks.length) return;
     
     let currentSection = '';
     
@@ -278,21 +302,23 @@ function updateActiveNavLink() {
 
 // Mobile Menu Toggle
 const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
+const navLinksContainer = document.getElementById('navLinks');
 
-if (menuToggle) {
+if (menuToggle && navLinksContainer) {
     menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
+        navLinksContainer.classList.toggle('active');
     });
 }
 
 // Close menu when a link is clicked
 const navLinksItems = document.querySelectorAll('.nav-links a');
-navLinksItems.forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
+if (navLinksItems.length && navLinksContainer) {
+    navLinksItems.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinksContainer.classList.remove('active');
+        });
     });
-});
+}
 
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -727,7 +753,8 @@ function ensureFxOverlay() {
     }
 
     focusTerminalInput();
-    printTerminalMessage("Tape 'help' pour voir les commandes.");
+    printTerminalMessage("Access restricted...");
+printHint();
   }
 
   function renderPromptLine() {
@@ -837,66 +864,85 @@ function ensureFxOverlay() {
     awaitingPassword = true;
     rebuildPromptLine();
   }
+  function printHint() {
+  if (!isAdmin && !awaitingPassword) {
+    printTerminalMessage("hint: try elevating privileges...");
+  }
+
+  else if (awaitingPassword) {
+    printTerminalMessage("hint: who are you really?");
+  }
+
+  else if (isAdmin) {
+    printTerminalMessage("hint: execute the final payload...");
+  }
+}
 
   function handleCommand(raw) {
-    const input = (raw ?? "").trim();
-    const command = input.toLowerCase();
+  const input = (raw ?? "").trim();
+  const command = input.toLowerCase();
 
-    if (!input) return;
+  if (!input) return;
 
-    printCommandEcho(input);
+  printCommandEcho(input);
 
-    if (command === "help") {
-      if (isAdmin) {
-        printTerminalMessage("Commandes : virus, clear, exit, help");
-      } else {
-        printTerminalMessage("Commandes : sudo -i, clear, help");
-      }
-      return;
+  if (command === "help") {
+    if (isAdmin) {
+      printTerminalMessage("Commandes : virus, clear, exit, help");
+    } else {
+      printTerminalMessage("Commandes : sudo -i, clear, help");
     }
+    return;
+  }
 
-    if (command === "clear") {
-      clearTerminal();
-      return;
-    }
+  if (command === "clear") {
+    clearTerminal();
+    return;
+  }
 
-    if (!isAdmin) {
-      if (command === "sudo -i") {
-        awaitingPassword = true;
-        passwordAttempts = 0;
-        printTerminalMessage("[sudo] password for user@chartres:");
-        rebuildPromptLine();
-        return;
-      }
-
-      if (command === "virus") {
-        printTerminalMessage("Permission denied. Passe en admin : sudo -i");
-        return;
-      }
-
-      printTerminalMessage("Commande inconnue. Tape 'help'.");
-      return;
-    }
-
-    if (command === "exit") {
-      isAdmin = false;
-      awaitingPassword = false;
+  // ===== USER MODE =====
+  if (!isAdmin) {
+    if (command === "sudo -i") {
+      awaitingPassword = true;
       passwordAttempts = 0;
-      printTerminalMessage("Session admin fermée.");
+      printTerminalMessage("[sudo] password for user@chartres:");
+      printHint(); // 👈 AJOUT
       rebuildPromptLine();
       return;
     }
 
     if (command === "virus") {
-      printTerminalMessage("ACCESSING SECURE DATABASE...");
-      setTimeout(() => {
-        window.location.href = "virus.html";
-      }, 1200);
+      printTerminalMessage("Permission denied.");
+      printHint(); // 👈 AJOUT
       return;
     }
 
-    printTerminalMessage("Commande inconnue. Tape 'help'.");
+    printTerminalMessage("Commande inconnue.");
+    printHint(); // 👈 AJOUT
+    return;
   }
+
+  // ===== ADMIN MODE =====
+  if (command === "exit") {
+    isAdmin = false;
+    awaitingPassword = false;
+    passwordAttempts = 0;
+    printTerminalMessage("Session admin fermée.");
+    rebuildPromptLine();
+    return;
+  }
+
+  if (command === "virus") {
+    printTerminalMessage("ACCESSING SECURE DATABASE...");
+    setTimeout(() => {
+      window.location.href = "virus.html";
+    }, 1200);
+    return;
+  }
+
+  printTerminalMessage("Commande inconnue.");
+  printHint(); // 👈 AJOUT
+}
 
   function clearTerminal() {
     const termBody = document.getElementById("termBody");
@@ -908,4 +954,50 @@ function ensureFxOverlay() {
   }
 
 })();
-term.classList.add("animate-in");
+
+
+// Détection ouverture console (approximation)
+let devtoolsOpen = false;
+
+setInterval(() => {
+  const widthThreshold = window.outerWidth - window.innerWidth > 160;
+  const heightThreshold = window.outerHeight - window.innerHeight > 160;
+
+  if (widthThreshold || heightThreshold) {
+    if (!devtoolsOpen) {
+      devtoolsOpen = true;
+
+      console.log("%c👀 Tu cherches des secrets ?", "color: #00ffcc; font-size: 16px;");
+      console.log("%cVoici un classique...", "color: #ffaa00; font-size: 14px;");
+      console.log("%c↑ ↑ ↓ ↓ ← → ← → B A", "color: #ff0066; font-size: 18px; font-weight: bold;");
+    }
+  } else {
+    devtoolsOpen = false;
+  }
+}, 500);
+console.log("%c[ACCESSING SECRET PROTOCOL...]", "color: green;");
+console.log("%cDecrypting input sequence...", "color: lime;");
+setTimeout(() => {
+  console.log("%c↑ ↑ ↓ ↓ ← → ← → B A", "color: red; font-size: 20px;");
+}, 1000);
+
+function openModal(imgSrc) {
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+
+    modal.style.display = "flex"; // "flex" est souvent mieux pour centrer le contenu
+    modalImg.src = imgSrc;
+}
+
+function closeModal() {
+    document.getElementById('modal').style.display = "none";
+}
+
+// Utilise ceci pour fermer en cliquant à côté
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
