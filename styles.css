@@ -1049,8 +1049,11 @@ body.virus-page #term .term-panel { width:min(860px,calc(100vw - 2rem)) !importa
   border-radius: 10px;
   object-fit: contain; /* Garde les proportions de l'image */
 }
-.email-text {
+.contact-details p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.contact-details {
+  min-width: 0;
 }
