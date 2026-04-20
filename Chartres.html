@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation ANSSI - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <div class="logo-icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SISR Portfolio</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="attestation-page">
+        <div class="container">
+            <div class="attestation-header-nav">
+                <a href="index.html#Attestation" class="attestation-back-link">
+                    ← Retour aux attestations
+                </a>
+            </div>
+
+            <div class="attestation-container">
+                <h1 class="attestation-title">Attestation de Stage a la DSI de Chartres</h1>
+
+                <!-- PDF Viewer -->
+                <div class="pdf-section">
+                    <embed src="pdf/Attestation de stage SIO2026.pdf" type="application/pdf">
+                </div>
+                <a href="pdf/Rapport de stage 2025 Marc BOOne.pdf" target="_blank">
+                    <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 2rem;">
+                        <span>Voir le rapport</span>    
+                    </button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Marc Boone - Portfolio BTS SIO SISR</p>
+        <p>Tous droits réservés | <a href="Mentions légales.html" class="footer-link">Mentions légales</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
