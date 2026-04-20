@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPAM - Portfolio Marc Boone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">SISR Portfolio</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="index.html#compétences" class="nav-link">Compétences</a></li>
+                <li><a href="index.html#projets" class="nav-link active">Projets</a></li>
+                <li><a href="index.html#veille" class="nav-link">Veille</a></li>
+                <li><a href="index.html#cv" class="nav-link">CV</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Projet Detail Section -->
+    <section id="projet-detail">
+        <div class="container">
+            <a href="index.html#projets" class="back-button">← Retour aux projets</a>
+            
+            <div class="projet-detail-container">
+                <div class="projet-detail-header">
+                    <div class="projet-detail-image">
+                        <img src="images/projet-infra.png" alt="Infrastructure Virtualisée" class="detail-img">
+                    </div>
+                    <div class="projet-detail-title">
+                        <h1>IPAM</h1>
+                        <p class="projet-date">2024 - 2025</p>
+                    </div>
+                </div>
+
+                <div class="projet-detail-content">
+                    <div class="detail-section">
+                        <h2>Description du Projet</h2>
+                        <p>
+                            Ce projet consiste à mettre en place un IPAM, qui est un outil de gestion des adresses IP. Mon rôle ici etait de passer d'un fichier Excel statique à quelque chose de plus dynamique et plus interactif pour permettre une meilleur gestion.
+                        </p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Objectifs Réalisés</h2>
+                        <ul class="detail-list">
+                            <li>Mise en place d'un IPAM</li>
+                            <li>Autonomie sur la découverte de ce nouvel outil(avec les droits administrateur)</li>
+                            <li>Configuration des stack, équipement, IP et les informations supplémentaires</li>
+                            <li>Script PowerShell afin d'automatiser la création des fichiers CSV nécessaire pour l'importation des IP</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Technologies Utilisées</h2>
+                        <div class="technologies">
+                            <span class="tech-tag">PHPIpam</span>
+                            <span class="tech-tag">Excel</span>
+                            <span class="tech-tag">PowerShell</span>
+                            <span class="tech-tag">VScode</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Résultats et Compétences Acquises</h2>
+                        <p>
+                            A travers ce projet j'ai pu gagner en autonomie et en responsabilite. J'ai découvert un nouvel outil de gestion des adresse IP gratuit et simple d'utilisation en open source. J'ai acquis les connaissances necessaire pour configurer cet outil et pouvoir le déployer dans des entreprises.
+                        </p>
+                    </div>
+
+                    <div class="detail-section download-section">
+                        <h2>Télécharger la Procédure</h2>
+                        <p>Consultez la procédure complète de ce projet :</p>
+                        <a href="procedures/ipam-setup.pdf" class="download-btn" download>
+                            <svg class="icon-download" viewBox="0 0 24 24">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Télécharger la Procédure (PDF)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024-2025 Marc Boone - Portfolio BTS SIO SISR</p>
+        <p>Tous droits réservés</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+

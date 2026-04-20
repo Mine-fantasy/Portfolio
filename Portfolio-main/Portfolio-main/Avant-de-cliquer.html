@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatisation Scripts - Portfolio Marc Boone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">SISR Portfolio</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="index.html#compétences" class="nav-link">Compétences</a></li>
+                <li><a href="index.html#projets" class="nav-link active">Projets</a></li>
+                <li><a href="index.html#veille" class="nav-link">Veille</a></li>
+                <li><a href="index.html#cv" class="nav-link">CV</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="index.html#Attestation" class="nav-link">Attestation</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Projet Detail Section -->
+    <section id="projet-detail">
+        <div class="container">
+            <a href="index.html#projets" class="back-button">← Retour aux projets</a>
+            
+            <div class="projet-detail-container">
+                <div class="projet-detail-header">
+                    <div class="projet-detail-image">
+                        <img src="images/cliquer.png" alt="Avant de cliquer" class="detail-img">
+                    </div>
+                    <div class="projet-detail-title">
+                        <h1>Avant de cliquer</h1>
+                        <p class="projet-date">juin 2025</p>
+                    </div>
+                </div>
+
+                <div class="projet-detail-content">
+                    <div class="detail-section">
+                        <h2>Description du Projet</h2>
+                        <p>
+                            Dans le cadre de mon satge a la DINSI du Rhône, j'ai été chargé de configuré une clé piégée pour sensibiliser les employés aux risques de sécurité liés à l'utilisation de périphériques USB non autorisés.
+                            J'ai utilisé une clé USB spécialement conçue pour simuler une attaque de type "BadUSB", qui peut compromettre la sécurité d'un système en exécutant des commandes malveillantes lorsqu'elle est connectée à un ordinateur.
+                        </p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Objectifs Réalisés</h2>
+                        <ul class="detail-list">
+                            <li>Configuration d'une clé USB "BadUSB" pour simuler une attaque de type "BadUSB"</li>
+                            <li>Documentation de la procédure de sensibilisation</li>
+                            <li>Présentation du projet aux employés de la DINSI</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Technologies Utilisées</h2>
+                        <div class="technologies">
+                            <span class="tech-tag">BadUSB</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Résultats et Compétences Acquises</h2>
+                        <p>
+                            Grace a ce projet, j'ai acquis une compréhension approfondie des risques de sécurité liés à l'utilisation de périphériques USB non autorisés, ainsi que des techniques pour sensibiliser les employés à ces risques.
+                            J'ai également développé mes compétences en documentation technique et en communication, en présentant le projet de manière claire et concise aux employés de la DINSI pour les sensibiliser à l'importance de la sécurité informatique.
+                        </p>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sécurisation Réseau - Portfolio Marc Boone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">SISR Portfolio</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="index.html#compétences" class="nav-link">Compétences</a></li>
+                <li><a href="index.html#projets" class="nav-link active">Projets</a></li>
+                <li><a href="index.html#veille" class="nav-link">Veille</a></li>
+                <li><a href="index.html#cv" class="nav-link">CV</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Projet Detail Section -->
+    <section id="projet-detail">
+        <div class="container">
+            <a href="index.html#projets" class="back-button">← Retour aux projets</a>
+            
+            <div class="projet-detail-container">
+                <div class="projet-detail-header">
+                    <div class="projet-detail-image">
+                        <img src="images/Snort.png" alt="Sécurisation Réseau" class="detail-img">
+                    </div>
+                    <div class="projet-detail-title">
+                        <h1>Sécurisation Réseau</h1>
+                        <p class="projet-date">2024 - 2025</p>
+                    </div>
+                </div>
+
+                <div class="projet-detail-content">
+                    <div class="detail-section">
+                        <h2>Description du Projet</h2>
+                        <p>
+                            Projet de détection d'intrusion IDS/IPS en utilisant Snort3. Ce projet est orienté cybersécurité, en utilisant Snort et Kali Linux.
+                        </p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Objectifs Réalisés</h2>
+                        <ul class="detail-list">
+                            <li>Installation de Snort3</li>
+                            <li>Installation de Kali linux</li>
+                            <li>Mise en palce des règles de détection de Snort3</li>
+                            <li>Test de DDOS et Bruteforce </li>
+                            <li>Visualtion des Instrusions/attaque grace aux logs</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Technologies Utilisées</h2>
+                        <div class="technologies">
+                            <span class="tech-tag">Kali linux</span>
+                            <span class="tech-tag">IDS/IPS</span>
+                            <span class="tech-tag">Snort3</span>
+                            <span class="tech-tag">attaque DDOS et Bruteforce</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2>Résultats et Compétences Acquises</h2>
+                        <p>
+                            Ce projet m'a permis d'acquérir une approche en sécurité réseau. J'ai également développé des compétences en configuration 
+                            de pare-feu, gestion des risques et gestion de log.
+                        </p>
+                    </div>
+
+                    <div class="detail-section download-section">
+                        <h2>Télécharger la Procédure</h2>
+                        <p>Consultez la procédure complète de ce projet :</p>
+                        <a href="procedures/Snort.pdf" class="download-btn" download>
+                            <svg class="icon-download" viewBox="0 0 24 24">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Télécharger la Procédure (PDF)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024-2025 Marc Boone - Portfolio BTS SIO SISR</p>
+        <p>Tous droits réservés</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

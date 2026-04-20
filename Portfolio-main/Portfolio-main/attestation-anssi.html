@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation ANSSI - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <div class="logo-icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SISR Portfolio</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="attestation-page">
+        <div class="container">
+            <div class="attestation-header-nav">
+                <a href="index.html#Attestation" class="attestation-back-link">
+                    ← Retour aux attestations
+                </a>
+            </div>
+
+            <div class="attestation-container">
+                <h1 class="attestation-title">Attestation du MOOC de l'ANSSI</h1>
+
+                <!-- PDF Viewer -->
+                <div class="pdf-section">
+                    <embed src="pdf/Attestation-ANSSI.pdf" type="application/pdf">
+                </div>
+
+                <!-- Information Section -->
+                <div class="attestation-info-section">
+                    <h3>
+                        <svg class="attestation-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                        </svg>
+                        À propos de cette attestation
+                    </h3>
+                    <p>
+                        Cette attestation certifie ma participation au MOOC (Massive Open Online Course) de l'ANSSI portant sur les 
+                        <strong>fondamentaux de la cybersécurité en entreprise</strong>. La formation couvre les aspects essentiels de la sécurité informatique 
+                        et les principaux risques cyber auxquels les organisations doivent faire face.
+                    </p>
+                    <h3 style="margin-top: 1.5rem;">Contenu de la formation :</h3>
+                    <ul>
+                        <li>Principes fondamentaux de la sécurité informatique</li>
+                        <li>Gestion des risques et des menaces informatiques</li>
+                        <li>Bonnes pratiques en sécurité des données</li>
+                        <li>Sensibilisation aux cybermenaces et attaques courantes</li>
+                        <li>Mise en place de mesures de protection</li>
+                        <li>Conformité réglementaire et normes de sécurité</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Marc Boone - Portfolio BTS SIO SISR</p>
+        <p>Tous droits réservés | <a href="Mentions légales.html" class="footer-link">Mentions légales</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
