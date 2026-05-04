@@ -26,8 +26,8 @@
                 <li><a href="#compétences" class="nav-link">Compétences</a></li>
                 <li><a href="#projets" class="nav-link">Projets</a></li>
                 <li><a href="#veille" class="nav-link">Veille</a></li>
-                <li><a href="#cv" class="nav-link">CV</a></li>
                 <li><a href="#Attestation" class="nav-link">Attestation</a></li>
+                <li><a href="#cv" class="nav-link">CV</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <button class="theme-toggle" id="themeToggle" title="Basculer le thème">🌙</button>
@@ -55,10 +55,11 @@
     <section id="compétences">
         <div class="container">
             <h2 class="section-title">Compétences Techniques</h2>
-            <!-- PDF Viewer -->
-                <div class="pdf-section">
-                    <embed src="pdf/Tab comp.pdf" type="application/pdf">
-                </div>
+            <div class="pdf-link-section">
+                <a href="pdf/Tab comp.pdf" class="button-link" target="_blank" rel="noopener noreferrer">
+                    Ouvrir le tableau des compétences
+                </a>
+            </div>
             <div class="skills-grid">
                 <a href="administration-systeme.html" class="skill-card-link">
                     <div class="skill-card">
@@ -243,38 +244,7 @@
         </div>
     </section>
 
-    <!-- CV Section -->
-    <section id="cv">
-        <div class="container">
-            <h2 class="section-title" style="background: linear-gradient(90deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                Curriculum Vitae
-            </h2>
-            <div class="cv-container">
-                <div class="cv-section">
-                    <h3>
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <path fill="#10b981" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                        </svg>
-                        Formation
-                    </h3>
-                    <div class="timeline-item">
-                        <p class="timeline-date">2024 - 2026</p>
-                        <p class="timeline-title">BTS SIO SISR</p>
-                        <p class="timeline-desc">Solutions d'Infrastructure, Systèmes et Réseaux</p>
-                    </div>
-                </div>
-
-                <a href="CV Marc Boone.pdf" download>
-                    <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 2rem;">
-                        <span>Télécharger mon CV complet</span>
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                        </svg>
-                    </button>
-                </a>
-            </div>
-        </div>
-    </section>
+  
     <!-- Attestation Section -->
      <section id="Attestation">
         <div class="container">
@@ -332,6 +302,37 @@
                     </div>
                 </div>
             </a>
+            </div>
+        </div>
+    </section>
+
+      <!-- CV Section -->
+    <section id="cv">
+        <div class="container">
+            <h2 class="section-title" style="background: linear-gradient(90deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Curriculum Vitae
+            </h2>
+            <div class="cv-container">
+                <div class="cv-section">
+                    <h3>
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path fill="#10b981" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                        </svg>
+                        Formation
+                    </h3>
+                    <div class="timeline-item">
+                        <p class="timeline-date">2024 - 2026</p>
+                        <p class="timeline-title">BTS SIO SISR</p>
+                        <p class="timeline-desc">Solutions d'Infrastructure, Systèmes et Réseaux</p>
+                    </div>
+                </div>
+
+                <a href="CV Marc Boone.pdf" class="download-btn" target="_blank" rel="noopener noreferrer">
+                            <svg class="icon-download" viewBox="0 0 24 24">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Voir le CV (PDF)
+                </a>
             </div>
         </div>
     </section>
