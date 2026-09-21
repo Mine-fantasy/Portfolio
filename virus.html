@@ -102,6 +102,54 @@
           <li><span>Leçon</span><span>Segmentation & supervision</span></li>
         </ul>
       </article>
+
+      <article class="vcard" data-tags="worm windows network 2008">
+        <div class="vcard-top">
+          <div class="badge">Worm</div>
+          <div class="meta">
+            <h2>Conficker</h2>
+            <p class="year">2008</p>
+          </div>
+        </div>
+        <p class="desc">Ver Windows exploitant une faille réseau et créant un vaste botnet difficile à neutraliser.</p>
+        <ul class="facts">
+          <li><span>Vecteur</span><span>Faille RPC Windows</span></li>
+          <li><span>Impact</span><span>Botnet mondial</span></li>
+          <li><span>Leçon</span><span>Corriger les services exposés</span></li>
+        </ul>
+      </article>
+
+      <article class="vcard" data-tags="wiper ransomware windows 2017 supply chain">
+        <div class="vcard-top">
+          <div class="badge danger">Wiper</div>
+          <div class="meta">
+            <h2>NotPetya</h2>
+            <p class="year">2017</p>
+          </div>
+        </div>
+        <p class="desc">Attaque destructive déguisée en ransomware, capable de rendre des postes et serveurs totalement inutilisables.</p>
+        <ul class="facts">
+          <li><span>Vecteur</span><span>Mise à jour compromise</span></li>
+          <li><span>Impact</span><span>Destruction de données</span></li>
+          <li><span>Leçon</span><span>Segmentation & restauration</span></li>
+        </ul>
+      </article>
+
+      <article class="vcard" data-tags="trojan banking botnet 2007">
+        <div class="vcard-top">
+          <div class="badge">Trojan</div>
+          <div class="meta">
+            <h2>Zeus</h2>
+            <p class="year">2007</p>
+          </div>
+        </div>
+        <p class="desc">Cheval de Troie bancaire conçu pour voler des identifiants et contrôler des machines à distance.</p>
+        <ul class="facts">
+          <li><span>Vecteur</span><span>Phishing / téléchargement</span></li>
+          <li><span>Impact</span><span>Vol de données bancaires</span></li>
+          <li><span>Leçon</span><span>Détection endpoint & MFA</span></li>
+        </ul>
+      </article>
     </section>
 
     <section class="panel" aria-label="Vérification mot de passe">
@@ -138,6 +186,78 @@
       <p class="hint">Tip: ouvre le terminal et tape <span class="mono">help</span>.</p>
     </footer>
   </main>
+
+  <!-- Dashboard overlay (ouvert via "open <virus>" dans le terminal) -->
+  <section class="dash" id="dash" aria-label="Dashboard virus" hidden>
+    <div class="dash-panel" role="dialog" aria-modal="true" aria-labelledby="dashName">
+      <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+      <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+
+      <div class="dash-head">
+        <div class="dash-head-left">
+          <span class="dash-live"><i></i>LIVE ANALYSIS</span>
+          <span class="dash-path mono">user@chartres:/virus/db<span id="dashSlug">#</span></span>
+        </div>
+        <button class="dash-close" id="dashClose" type="button" aria-label="Fermer le dashboard">✕ Fermer</button>
+      </div>
+
+      <div class="dash-body">
+        <div class="dash-card dash-id">
+          <span class="hud-corner tl"></span><span class="hud-corner br"></span>
+          <span class="dash-eyebrow">THREAT INTELLIGENCE / 07</span>
+          <div class="dash-icon" id="dashIcon" aria-hidden="true"></div>
+          <h3 id="dashName" class="dash-name">—</h3>
+          <div class="dash-tags">
+            <span class="badge" id="dashBadge">—</span>
+            <span class="dash-year mono" id="dashYear">—</span>
+          </div>
+          <div class="dash-gauge" id="dashGauge" style="--pct:0">
+            <div class="dash-gauge-inner">
+              <b id="dashGaugeVal">0</b>
+              <span>THREAT</span>
+            </div>
+          </div>
+          <div class="dash-risk-label"><span>RISK INDEX</span><b id="dashRiskLabel">CRITICAL</b></div>
+          <ul class="dash-mini">
+            <li><span>Vecteur</span><b id="dashVector">—</b></li>
+            <li><span>Cible</span><b id="dashTarget">—</b></li>
+          </ul>
+        </div>
+
+        <div class="dash-card dash-stats">
+          <span class="hud-corner tl"></span><span class="hud-corner br"></span>
+          <div class="dash-card-title"><h4>Incident overview</h4><span class="dash-status">● MONITORING</span></div>
+          <p class="dash-summary" id="dashSummary">—</p>
+          <div class="dash-kpis">
+            <div><span>CONFIDENCE</span><b id="dashConfidence">98.4%</b></div>
+            <div><span>EXPOSURE</span><b id="dashExposure">GLOBAL</b></div>
+            <div><span>CONTAINMENT</span><b class="good">ACTIVE</b></div>
+          </div>
+          <h5>Impact telemetry</h5>
+          <div class="dash-bars" id="dashBars"></div>
+        </div>
+
+        <div class="dash-card dash-timeline">
+          <span class="hud-corner tl"></span><span class="hud-corner br"></span>
+          <div class="dash-card-title"><h4>Attack path</h4><span class="dash-feed mono">FEED // 04</span></div>
+          <div class="dash-attack-path" aria-label="Chaîne d'attaque"><span>ENTRY</span><i></i><span>EXEC</span><i></i><span>SPREAD</span><i></i><span>IMPACT</span></div>
+          <h5>Event timeline</h5>
+          <ul class="dash-timeline-list" id="dashTimeline"></ul>
+        </div>
+
+        <div class="dash-card dash-defense">
+          <span class="hud-corner tl"></span><span class="hud-corner br"></span>
+          <div class="dash-card-title"><h4>Response playbook</h4><span class="dash-feed mono">SOC-7</span></div>
+          <div class="dash-command"><span class="dash-command-dot"></span><span>ISOLATION PROTOCOL</span><b>READY</b></div>
+          <ul class="dash-defense-list" id="dashDefense"></ul>
+        </div>
+      </div>
+
+      <div class="dash-ticker mono" aria-hidden="true">
+        <div class="dash-ticker-track" id="dashTicker"></div>
+      </div>
+    </div>
+  </section>
 
   <!-- Terminal overlay -->
   <section class="term" id="term" aria-label="Terminal" hidden>
@@ -374,21 +494,22 @@
 
     const c = cmd.toLowerCase();
     if(c === "help"){
-      print("Commandes: help, list, open wannacry, open iloveyou, open stuxnet, clear, exit");
+      print("Commandes: help, list, open wannacry, open iloveyou, open stuxnet, open conficker, open notpetya, open zeus, clear, exit");
       return;
     }
     if(c === "list"){
-      print("ILOVEYOU (2000) • WannaCry (2017) • Stuxnet");
+      print("ILOVEYOU (2000) • WannaCry (2017) • Stuxnet • Conficker (2008) • NotPetya (2017) • Zeus (2007)");
       return;
     }
     if(c.startsWith("open ")){
       const what = c.slice(5).trim();
-      const map = {
-        "wannacry": "WannaCry: ransomware exploitant une faille Windows. Défense: patch + sauvegardes + segmentation.",
-        "iloveyou": "ILOVEYOU: propagation email via pièce jointe. Défense: sensibilisation + filtrage + MFA.",
-        "stuxnet": "Stuxnet: malware ciblé industriel. Défense: segmentation OT/IT + supervision + contrôle USB."
-      };
-      print(map[what] || "Entrée inconnue.");
+      if(window.VirusDash && window.VirusDash.has(what)){
+        print("Chargement du dossier " + what.toUpperCase() + "…");
+        window.VirusDash.open(what);
+        close(); // referme le terminal pour laisser place au dashboard
+      } else {
+        print("Entrée inconnue. Essaie: open wannacry / open conficker / open notpetya / open zeus");
+      }
       return;
     }
     if(c === "clear"){
@@ -408,6 +529,282 @@
   term.addEventListener("click", (e) => {
     if(e.target === term) close();
   });
+})();
+
+/* ========= VIRUS DASHBOARD ========= */
+(function(){
+  const ICONS = {
+    worm: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 32c4 0 4-8 8-8s4 8 8 8 4-8 8-8 4 8 8 8"/><circle cx="6" cy="32" r="2.4" fill="currentColor" stroke="none"/><path d="M40 16l3 3-3 3"/></svg>',
+    ransom: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="21" width="28" height="19" rx="3"/><path d="M16 21v-6a8 8 0 0 1 16 0v6"/><circle cx="24" cy="30" r="2.6" fill="currentColor" stroke="none"/><path d="M24 32.6v4"/></svg>',
+    target: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="24" cy="24" r="15"/><circle cx="24" cy="24" r="8.5"/><circle cx="24" cy="24" r="2.2" fill="currentColor" stroke="none"/><path d="M24 3v7M24 38v7M3 24h7M38 24h7"/></svg>'
+  };
+
+  const DATA = {
+    iloveyou: {
+      name: "ILOVEYOU", year: "2000", icon: "worm", badge: "Worm", badgeClass: "badge",
+      threat: 82,
+      vector: "Pièce jointe email (VBScript)",
+      target: "Utilisateurs Windows / Outlook",
+      summary: "Se déguisait en lettre d'amour dans un email. À l'ouverture, il écrasait des fichiers (images, musique) et s'auto-envoyait à tout le carnet d'adresses Outlook de la victime.",
+      stats: [
+        { label:"Machines infectées", val:"45M+", pct:90 },
+        { label:"Pays touchés", val:"20+", pct:60 },
+        { label:"Dégâts estimés", val:"~10 Md $", pct:75 },
+        { label:"Propagation totale", val:"~10 jours", pct:40 }
+      ],
+      timeline: [
+        { t:"4 mai 2000", l:"Premiers emails « ILOVEYOU » envoyés depuis les Philippines" },
+        { t:"+ quelques heures", l:"Propagation mondiale via les carnets d'adresses Outlook" },
+        { t:"Jours suivants", l:"Écrasement de fichiers, vol de mots de passe stockés" },
+        { t:"Mai 2000", l:"Suspect identifié et arrêté aux Philippines" }
+      ],
+      defense: [
+        "Ne jamais ouvrir une pièce jointe inattendue, même d'un contact connu",
+        "Désactiver l'exécution automatique des scripts VBS",
+        "Filtrage anti-spam / anti-malware côté serveur mail",
+        "Former les utilisateurs à repérer le phishing"
+      ]
+    },
+    wannacry: {
+      name: "WannaCry", year: "2017", icon: "ransom", badge: "Ransomware", badgeClass: "badge danger",
+      threat: 95,
+      vector: "Exploit EternalBlue (faille SMBv1)",
+      target: "Postes Windows non patchés",
+      summary: "Ransomware auto-propagable exploitant une faille réseau Windows pour se diffuser sans aucune action de l'utilisateur, chiffrant les fichiers et réclamant une rançon en bitcoin.",
+      stats: [
+        { label:"Machines touchées", val:"230 000+", pct:85 },
+        { label:"Pays touchés", val:"150+", pct:95 },
+        { label:"Dégâts estimés", val:"~4 Md $", pct:60 },
+        { label:"Avant kill-switch", val:"~4 jours", pct:20 }
+      ],
+      timeline: [
+        { t:"12 mai 2017", l:"Première vague massive, hôpitaux du NHS fortement touchés" },
+        { t:"Le jour même", l:"Un chercheur découvre et active un « kill switch » accidentel" },
+        { t:"Semaines suivantes", l:"Des variantes sans kill-switch continuent de circuler" },
+        { t:"Plus tard", l:"Attribution évoquée par plusieurs experts à un groupe nord-coréen" }
+      ],
+      defense: [
+        "Appliquer sans délai les correctifs de sécurité (patch MS17-010)",
+        "Désactiver SMBv1 si le protocole n'est pas utilisé",
+        "Sauvegardes régulières et hors-ligne",
+        "Segmenter le réseau pour limiter une propagation latérale"
+      ]
+    },
+    stuxnet: {
+      name: "Stuxnet", year: "≈2010", icon: "target", badge: "Targeted", badgeClass: "badge",
+      threat: 98,
+      vector: "Clé USB + plusieurs failles 0-day Windows",
+      target: "Systèmes industriels SCADA (Siemens)",
+      summary: "Malware extrêmement ciblé visant des automates industriels précis. Capable de saboter physiquement des équipements tout en affichant de fausses données normales aux superviseurs.",
+      stats: [
+        { label:"Failles 0-day", val:"4", pct:80 },
+        { label:"Centrifugeuses visées", val:"~1 000", pct:70 },
+        { label:"Site principal", val:"Natanz (Iran)", pct:50 },
+        { label:"Sophistication", val:"Très élevée", pct:97 }
+      ],
+      timeline: [
+        { t:"≈2005–2010", l:"Développement présumé sur plusieurs années" },
+        { t:"2010", l:"Découverte publique par des chercheurs en sécurité" },
+        { t:"Analyse", l:"Ciblage précis des automates industriels Siemens S7" },
+        { t:"Depuis", l:"Considéré comme l'une des premières armes cyber connues" }
+      ],
+      defense: [
+        "Isoler les réseaux industriels (OT) du reste du système d'information",
+        "Contrôler strictement l'usage des périphériques USB",
+        "Superviser en continu les automates et journaux industriels",
+        "Auditer les accès physiques aux infrastructures sensibles"
+      ]
+    },
+    conficker: {
+      name: "Conficker", year: "2008", icon: "worm", badge: "Worm", badgeClass: "badge",
+      threat: 88,
+      vector: "Exploit MS08-067 (service RPC)",
+      target: "Postes Windows connectés au réseau",
+      summary: "Ver réseau qui exploitait une faille critique de Windows pour désactiver des protections, se propager automatiquement et construire un botnet mondial.",
+      stats: [
+        { label:"Machines touchées", val:"9M+", pct:82 },
+        { label:"Pays concernés", val:"190+", pct:96 },
+        { label:"Taille du botnet", val:"~6,5M", pct:70 },
+        { label:"Durée d'activité", val:"5+ ans", pct:80 }
+      ],
+      timeline: [
+        { t:"Octobre 2008", l:"Microsoft publie le correctif MS08-067 en urgence" },
+        { t:"Janvier 2009", l:"Le botnet atteint plusieurs millions de machines" },
+        { t:"Années suivantes", l:"De nouvelles variantes résistent aux opérations de nettoyage" },
+        { t:"Depuis", l:"Le cas devient un exemple majeur de dette de patch" }
+      ],
+      defense: [
+        "Appliquer le correctif MS08-067 sur tous les systèmes concernés",
+        "Bloquer les ports SMB et RPC inutiles entre segments",
+        "Désactiver les comptes et services non nécessaires",
+        "Surveiller les connexions sortantes et les changements DNS"
+      ]
+    },
+    notpetya: {
+      name: "NotPetya", year: "2017", icon: "ransom", badge: "Wiper", badgeClass: "badge danger",
+      threat: 99,
+      vector: "Mise à jour compromise + mouvements latéraux",
+      target: "Entreprises et infrastructures interconnectées",
+      summary: "Attaque destructive propagée via un logiciel de comptabilité compromis. Malgré son apparence de ransomware, son objectif principal était de rendre les systèmes irrécupérables.",
+      stats: [
+        { label:"Pays touchés", val:"65+", pct:72 },
+        { label:"Pertes estimées", val:"10 Md $", pct:98 },
+        { label:"Propagation", val:"Quelques heures", pct:95 },
+        { label:"Récupération", val:"Semaines / mois", pct:90 }
+      ],
+      timeline: [
+        { t:"27 juin 2017", l:"Une mise à jour compromise déclenche la première vague" },
+        { t:"Heures suivantes", l:"Propagation par identifiants volés et outils d'administration" },
+        { t:"Même journée", l:"Ports, entreprises et services publics interrompus" },
+        { t:"Après l'attaque", l:"Les experts confirment un comportement de wiper destructif" }
+      ],
+      defense: [
+        "Séparer les sauvegardes du réseau de production",
+        "Segmenter les comptes d'administration et les postes critiques",
+        "Vérifier l'intégrité des mises à jour logicielles",
+        "Préparer un plan de reconstruction hors ligne testé"
+      ]
+    },
+    zeus: {
+      name: "Zeus", year: "2007", icon: "target", badge: "Trojan", badgeClass: "badge",
+      threat: 91,
+      vector: "Phishing, pièces jointes et téléchargements piégés",
+      target: "Postes utilisateurs et services bancaires",
+      summary: "Cheval de Troie bancaire qui enregistrait les frappes, interceptait les formulaires et transformait les machines compromises en nœuds d'un botnet criminel.",
+      stats: [
+        { label:"Échantillons connus", val:"150 000+", pct:76 },
+        { label:"Pertes estimées", val:"100M $+", pct:68 },
+        { label:"Cibles principales", val:"Banques / PME", pct:82 },
+        { label:"Persistance", val:"Élevée", pct:88 }
+      ],
+      timeline: [
+        { t:"2007", l:"Premières campagnes de vol d'identifiants bancaires" },
+        { t:"2009–2010", l:"Le botnet s'étend via des kits d'exploitation et le phishing" },
+        { t:"2010", l:"Une opération internationale démantèle une partie de l'infrastructure" },
+        { t:"Depuis", l:"Son code inspire plusieurs familles de chevaux de Troie bancaires" }
+      ],
+      defense: [
+        "Activer l'authentification multifacteur sur les comptes sensibles",
+        "Déployer une protection endpoint avec analyse comportementale",
+        "Filtrer les pièces jointes et les domaines récemment créés",
+        "Former les utilisateurs aux faux formulaires et au phishing"
+      ]
+    }
+  };
+
+  const dash = document.getElementById("dash");
+  if(!dash) return;
+
+  const els = {
+    close: document.getElementById("dashClose"),
+    slug: document.getElementById("dashSlug"),
+    icon: document.getElementById("dashIcon"),
+    name: document.getElementById("dashName"),
+    badge: document.getElementById("dashBadge"),
+    year: document.getElementById("dashYear"),
+    gauge: document.getElementById("dashGauge"),
+    gaugeVal: document.getElementById("dashGaugeVal"),
+    riskLabel: document.getElementById("dashRiskLabel"),
+    confidence: document.getElementById("dashConfidence"),
+    exposure: document.getElementById("dashExposure"),
+    vector: document.getElementById("dashVector"),
+    target: document.getElementById("dashTarget"),
+    summary: document.getElementById("dashSummary"),
+    bars: document.getElementById("dashBars"),
+    timeline: document.getElementById("dashTimeline"),
+    defense: document.getElementById("dashDefense"),
+    ticker: document.getElementById("dashTicker")
+  };
+
+  let lastFocused = null;
+
+  function fillBars(stats){
+    els.bars.innerHTML = "";
+    stats.forEach(s => {
+      const row = document.createElement("div");
+      row.className = "dash-bar-row";
+      row.innerHTML =
+        '<span class="dash-bar-label">' + s.label + '</span>' +
+        '<span class="dash-bar-track"><span class="dash-bar-fill"></span></span>' +
+        '<span class="dash-bar-val">' + s.val + '</span>';
+      els.bars.appendChild(row);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          row.querySelector(".dash-bar-fill").style.width = s.pct + "%";
+        });
+      });
+    });
+  }
+
+  function fillList(el, items, mapFn){
+    el.innerHTML = items.map(mapFn).join("");
+  }
+
+  function animateGauge(target){
+    els.gauge.style.setProperty("--pct", 0);
+    let n = 0;
+    const step = Math.max(1, Math.round(target / 40));
+    const t = setInterval(() => {
+      n = Math.min(target, n + step);
+      els.gauge.style.setProperty("--pct", n);
+      els.gaugeVal.textContent = n;
+      if(n >= target) clearInterval(t);
+    }, 16);
+  }
+
+  function open(key){
+    const d = DATA[key];
+    if(!d) return;
+    lastFocused = document.activeElement;
+
+    els.slug.textContent = "/" + key;
+    els.icon.innerHTML = ICONS[d.icon] || "";
+    els.name.textContent = d.name;
+    els.badge.textContent = d.badge;
+    els.badge.className = d.badgeClass;
+    els.year.textContent = d.year;
+    els.riskLabel.textContent = d.threat >= 95 ? "CRITICAL" : d.threat >= 80 ? "HIGH" : "ELEVATED";
+    els.confidence.textContent = (96 + (d.threat % 4) / 10).toFixed(1) + "%";
+    els.exposure.textContent = key === "stuxnet" ? "TARGETED" : d.threat >= 90 ? "GLOBAL" : "WIDESPREAD";
+    els.vector.textContent = d.vector;
+    els.target.textContent = d.target;
+    els.summary.textContent = d.summary;
+
+    animateGauge(d.threat);
+    fillBars(d.stats);
+    fillList(els.timeline, d.timeline, e => '<li><span class="t mono">' + e.t + '</span>' + e.l + '</li>');
+    fillList(els.defense, d.defense, e => '<li>' + e + '</li>');
+
+    const tickerText = d.stats.map(s => s.label.toUpperCase() + ": " + s.val).join("   •   ");
+    els.ticker.textContent = (tickerText + "   •   ").repeat(3);
+
+    document.body.classList.add("dashboard-open");
+    document.documentElement.classList.add("dashboard-open");
+    dash.hidden = false;
+    document.addEventListener("keydown", onKeyDown);
+    setTimeout(() => els.close.focus(), 0);
+  }
+
+  function closeDash(){
+    dash.hidden = true;
+    document.body.classList.remove("dashboard-open");
+    document.documentElement.classList.remove("dashboard-open");
+    document.removeEventListener("keydown", onKeyDown);
+    if(lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  function onKeyDown(e){
+    if(e.key === "Escape") closeDash();
+  }
+
+  els.close.addEventListener("click", closeDash);
+  dash.addEventListener("click", (e) => { if(e.target === dash) closeDash(); });
+
+  window.VirusDash = {
+    has: (key) => Object.prototype.hasOwnProperty.call(DATA, key),
+    open,
+    close: closeDash
+  };
 })();
 </script>
 </body>

@@ -358,267 +358,121 @@ scrollTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
-// ===== KONAMI CODE -> MATRIX HACKER MODE (no index.html changes) =====
+// ===== PRIVILEGE ELEVATION LOGIN =====
 (function () {
-  const konami = [
-    "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
-    "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
-    "b","a"
-  ];
-  let buffer = [];
-
-    // --- UI refs / timers (Konami boot + terminal) ---
-  let bootEl = null;
+  // --- UI refs / timers ---
   let terminalEl = null;
-  let fxEl = null;
+  let bootEl = null;
   let bootTimer = null;
-  let typeTimer = null;
+  let fxEl = null;
+  let canvas = null;
+  let ctx = null;
+  let matrixAnimation = null;
 
-  // 3 propositions de “scénarios” terminal : on alterne à chaque activation
-  const terminalScripts = [
-    {
-      title: "root@chartres:~",
-      lines: [
-        "sudo -s",
-        "whoami",
-        "root",
-        "ACCESS ADMIN GRANTED",
-        "Welcome, operator."
-      ],
-    },
-    {
-      title: "sys@chartres:/var/log",
-      lines: [
-        "tail -n 3 auth.log",
-        "AUTH: token validated :: scope=superuser",
-        "AUTH: policy override injected",
-        "PRIVILEGES ELEVATED",
-        "SESSION: 0xDEADBEEF"
-      ],
-    },
-    {
-      title: "admin@chartres:/",
-      lines: [
-        "ssh admin@localhost",
-        "Password: ********",
-        "ACCESS DENIED",
-        "retry --force",
-        "ACCESS ADMIN GRANTED",
-        "SYSTEM ONLINE"
-      ],
-    }
-  ];
-
-  function pickTerminalScript() {
-    const key = "konami_terminal_variant";
-    const current = parseInt(localStorage.getItem(key) || "0", 10);
-    const next = (current + 1) % terminalScripts.length;
-    localStorage.setItem(key, String(next));
-    return terminalScripts[current % terminalScripts.length];
+  function ensureFxOverlay() {
+    if (fxEl) return;
+    fxEl = document.createElement("div");
+    fxEl.id = "hacker-fx";
+    fxEl.setAttribute("aria-hidden", "true");
+    document.body.appendChild(fxEl);
   }
 
-  function toggleHackerMode() {
-    const isOn = document.body.classList.toggle("hacker-mode");
-    if (isOn) {
-      startMatrix();
-      ensureFxOverlay();
-      startBootSequence();
-    } else {
-      stopMatrix();
-      cleanupBootAndTerminal();
+  function startMatrix() {
+    if (canvas) return;
+    canvas = document.createElement("canvas");
+    canvas.id = "matrix-canvas";
+    document.body.appendChild(canvas);
+    ctx = canvas.getContext("2d");
+    const characters = "01ABCDEF<>[]{}#$%";
+    let columns = 0;
+    let drops = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      columns = Math.floor(canvas.width / 16);
+      drops = Array.from({ length: columns }, () => Math.random() * canvas.height / 16);
+      ctx.font = "16px monospace";
     }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.09)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(16, 185, 129, 0.9)";
+      drops.forEach((drop, index) => {
+        ctx.fillText(characters[Math.floor(Math.random() * characters.length)], index * 16, drop * 16);
+        drops[index] = drop * 16 > canvas.height && Math.random() > 0.975 ? 0 : drop + 0.35;
+      });
+      matrixAnimation = requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    draw();
   }
 
-  function cleanupBootAndTerminal() {
+  function stopEffects() {
     if (bootTimer) clearInterval(bootTimer);
     bootTimer = null;
-
-    if (typeTimer) clearInterval(typeTimer);
-    typeTimer = null;
-
-    if (bootEl) bootEl.remove();
-    bootEl = null;
-
-    if (terminalEl) terminalEl.remove();
-    terminalEl = null;
-
+    if (matrixAnimation) cancelAnimationFrame(matrixAnimation);
+    matrixAnimation = null;
+    if (canvas) canvas.remove();
     if (fxEl) fxEl.remove();
+    canvas = null;
+    ctx = null;
     fxEl = null;
+    document.body.classList.remove("hacker-mode");
   }
 
-
-function ensureFxOverlay() {
-  if (fxEl) return;
-  fxEl = document.createElement("div");
-  fxEl.id = "hacker-fx";
-  fxEl.setAttribute("aria-hidden", "true");
-  document.body.appendChild(fxEl);
-}
-
-  function ensureBootUI() {
-    if (bootEl) return;
+  function startLoginSequence() {
+    if (terminalEl || bootEl) return;
+    isAdmin = false;
+    awaitingPassword = false;
+    passwordAttempts = 0;
+    document.body.classList.add("hacker-mode");
+    ensureFxOverlay();
+    startMatrix();
 
     bootEl = document.createElement("div");
     bootEl.id = "hacker-boot";
     bootEl.innerHTML = `
-      <div class="boot-panel" role="dialog" aria-label="Hacker boot">
-        <div class="boot-header">
-          <span class="dots">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-          </span>
-          <span>INIT :: PRIV-ESC / KERNEL HANDSHAKE</span>
-        </div>
+      <div class="boot-panel" role="dialog" aria-label="Initialisation de l'élévation des privilèges">
+        <div class="boot-header"><span class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></span><span>INIT :: PRIV-ESC / KERNEL HANDSHAKE</span></div>
         <div class="boot-body">
           <div class="boot-line" id="bootLine">Establishing secure channel...</div>
-          <div class="progress-wrap" aria-hidden="true">
-            <div class="progress-bar" id="bootBar"></div>
-          </div>
-          <div class="progress-meta">
-            <span id="bootPct">0%</span>
-            <span id="bootStatus">IDLE</span>
-          </div>
+          <div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="bootBar"></div></div>
+          <div class="progress-meta"><span id="bootPct">0%</span><span id="bootStatus">RUN</span></div>
         </div>
-      </div>
-    `;
+      </div>`;
     document.body.appendChild(bootEl);
-  }
-
-  function startBootSequence() {
-    cleanupBootAndTerminal(); // évite les doublons si Konami relancé vite
-    ensureBootUI();
-
-    const bootLine = document.getElementById("bootLine");
-    const bootBar = document.getElementById("bootBar");
-    const bootPct = document.getElementById("bootPct");
-    const bootStatus = document.getElementById("bootStatus");
 
     const lines = [
       "Establishing secure channel...",
-      "Bypassing firewall ruleset...",
-      "Injecting payload into auth service...",
-      "Escalating privileges...",
-      "Decrypting token vault...",
-      "Syncing access control lists...",
-      "Finalizing session..."
+      "Checking access control list...",
+      "Verifying local session...",
+      "Preparing privilege elevation...",
+      "Syncing authentication policy...",
+      "Finalizing secure session..."
     ];
-
-    const statuses = ["RUN", "EXEC", "OK", "WARN", "SYNC", "PATCH"];
-
-    let p = 0;
-    let i = 0;
-
-    if (bootStatus) bootStatus.textContent = "RUN";
-    if (bootLine) bootLine.textContent = lines[0];
-    if (bootBar) bootBar.style.width = "0%";
-    if (bootPct) bootPct.textContent = "0%";
-
+    let progress = 0;
+    let line = 0;
     bootTimer = setInterval(() => {
-      const step = Math.random() * 6 + 2; // 2..8
-      p = Math.min(100, p + step);
-
-      if (bootBar) bootBar.style.width = `${p}%`;
-      if (bootPct) bootPct.textContent = `${Math.floor(p)}%`;
-
-      if (Math.random() > 0.6) {
-        i = Math.min(lines.length - 1, i + 1);
-        if (bootLine) bootLine.textContent = lines[i];
-      }
-      if (Math.random() > 0.65) {
-        if (bootStatus) bootStatus.textContent = statuses[Math.floor(Math.random() * statuses.length)];
-      }
-
-      if (p >= 100) {
+      progress = Math.min(100, progress + Math.random() * 12 + 7);
+      line = Math.min(lines.length - 1, Math.floor(progress / 18));
+      bootEl.querySelector("#bootBar").style.width = `${progress}%`;
+      bootEl.querySelector("#bootPct").textContent = `${Math.floor(progress)}%`;
+      bootEl.querySelector("#bootLine").textContent = lines[line];
+      if (progress >= 100) {
         clearInterval(bootTimer);
         bootTimer = null;
-
-        if (bootStatus) bootStatus.textContent = "OK";
-        if (bootLine) bootLine.textContent = "Boot complete. Launching terminal...";
-
+        bootEl.querySelector("#bootStatus").textContent = "OK";
         setTimeout(() => {
           if (bootEl) bootEl.remove();
           bootEl = null;
           openTerminalInteractive();
-        }, 550);
+        }, 350);
       }
     }, 120);
-  }
-
-  function openTerminal() {
-    if (terminalEl) return;
-
-    const scenario = pickTerminalScript();
-
-    terminalEl = document.createElement("div");
-    terminalEl.id = "hacker-terminal";
-    terminalEl.innerHTML = `
-      <div class="terminal-panel" role="dialog" aria-label="Terminal">
-        <div class="terminal-header">
-          <span>${escapeHtml(scenario.title)}</span>
-          <button class="close-btn" id="termClose">Fermer</button>
-        </div>
-        <div class="terminal-body" id="termBody">
-          <div><span class="prompt">root@chartres</span>:<span class="prompt">~</span>$ <span id="termText"></span><span class="cursor"></span></div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(terminalEl);
-
-    const closeBtn = document.getElementById("termClose");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        if (terminalEl) terminalEl.remove();
-        terminalEl = null;
-      });
-    }
-
-    typeTerminalLines(scenario.lines);
-  }
-
-  function typeTerminalLines(lines) {
-    const termText = document.getElementById("termText");
-    const termBody = document.getElementById("termBody");
-    if (!termText || !termBody) return;
-
-    let lineIndex = 0;
-
-    const printLine = (text, done) => {
-      termText.textContent = "";
-      let c = 0;
-
-      if (typeTimer) clearInterval(typeTimer);
-      typeTimer = setInterval(() => {
-        c++;
-        termText.textContent = text.slice(0, c);
-        termBody.scrollTop = termBody.scrollHeight;
-
-        if (c >= text.length) {
-          clearInterval(typeTimer);
-          typeTimer = null;
-          done();
-        }
-      }, 22);
-    };
-
-    const next = () => {
-      if (lineIndex >= lines.length) return;
-
-      const current = lines[lineIndex++];
-      printLine(current, () => {
-        const div = document.createElement("div");
-        const safe = escapeHtml(current);
-        const isGranted = current.toUpperCase().includes("ACCESS ADMIN GRANTED");
-        div.innerHTML = `<span class="prompt">root@chartres</span>:<span class="prompt">~</span>$ ` +
-          (isGranted ? `<span class="glitch" data-text="${safe}">${safe}</span>` : safe);
-        termBody.insertBefore(div, termBody.lastElementChild);
-
-        termText.textContent = "";
-        setTimeout(next, 180);
-      });
-    };
-
-    next();
   }
 
   function escapeHtml(str) {
@@ -630,92 +484,6 @@ function ensureFxOverlay() {
       "'": "&#039;"
     }[m]));
   }
-
-  // Listen Konami
-  window.addEventListener("keydown", (e) => {
-    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    buffer.push(key);
-    buffer = buffer.slice(-konami.length);
-
-    if (buffer.join(",") === konami.join(",")) {
-      buffer = [];
-      toggleHackerMode();
-    }
-  });
-
-  // ===== Matrix rain =====
-  let canvas, ctx, animId, intervalId;
-  let columns = 0;
-  let drops = [];
-  const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  function createCanvas() {
-    if (canvas) return;
-    canvas = document.createElement("canvas");
-    canvas.id = "matrix-canvas";
-    document.body.appendChild(canvas);
-    ctx = canvas.getContext("2d", { alpha: true });
-    resize();
-    window.addEventListener("resize", resize);
-  }
-
-  function resize() {
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const fontSize = 16;
-    columns = Math.floor(canvas.width / fontSize);
-    drops = Array.from({ length: columns }, () => Math.floor(Math.random() * canvas.height / fontSize));
-    ctx.font = `${fontSize}px monospace`;
-  }
-
-  function draw() {
-    if (!ctx || !canvas) return;
-
-    // Fading background (trace effect)
-    ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "rgba(16, 185, 129, 0.95)"; // vert "terminal"
-    const fontSize = 16;
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = chars[Math.floor(Math.random() * chars.length)];
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-
-      ctx.fillText(text, x, y);
-
-      // Reset drop randomly
-      if (y > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]+= 0.3; // vitesse de chute
-    }
-
-    animId = requestAnimationFrame(draw);
-  }
-
-  function startMatrix() {
-    createCanvas();
-    if (animId) cancelAnimationFrame(animId);
-    animId = requestAnimationFrame(draw);
-  }
-
-  function stopMatrix() {
-    if (animId) cancelAnimationFrame(animId);
-    animId = null;
-
-    // Option : enlever le canvas complètement
-    if (canvas) {
-      canvas.remove();
-      canvas = null;
-      ctx = null;
-      window.removeEventListener("resize", resize);
-    }
-  }
-
 
   // ===== Interactive Terminal Version (sudo -i -> password -> admin -> virus) =====
   // Change this password to whatever you want:
@@ -734,7 +502,7 @@ function ensureFxOverlay() {
     terminalEl.innerHTML = `
       <div class="terminal-panel" role="dialog" aria-label="Terminal">
         <div class="terminal-header">
-          <span>${isAdmin ? "root@chartres:~" : "user@chartres:~"}</span>
+          <span>${isAdmin ? "root@IAC:~" : "user@IAC:~"}</span>
           <button class="close-btn" id="termClose">Fermer</button>
         </div>
         <div class="terminal-body" id="termBody">
@@ -749,6 +517,7 @@ function ensureFxOverlay() {
       closeBtn.addEventListener("click", () => {
         if (terminalEl) terminalEl.remove();
         terminalEl = null;
+        stopEffects();
       });
     }
 
@@ -758,7 +527,7 @@ printHint();
   }
 
   function renderPromptLine() {
-    const who = isAdmin ? "root@chartres" : "user@chartres";
+    const who = isAdmin ? "root@IAC" : "user@IAC";
     const prompt = `<span class="prompt">${who}</span>:<span class="prompt">~</span>$ `;
     const inputType = awaitingPassword ? "password" : "text";
     const inputClass = awaitingPassword ? "terminal-input terminal-input-password" : "terminal-input";
@@ -772,7 +541,7 @@ printHint();
 
   function refreshTerminalHeader() {
     const headerSpan = terminalEl?.querySelector(".terminal-header span");
-    if (headerSpan) headerSpan.textContent = isAdmin ? "root@chartres:~" : "user@chartres:~";
+    if (headerSpan) headerSpan.textContent = isAdmin ? "root@IAC:~" : "user@IAC:~";
   }
 
   function focusTerminalInput() {
@@ -799,7 +568,7 @@ printHint();
     const termBody = document.getElementById("termBody");
     if (!termBody) return;
 
-    const who = isAdmin ? "root@chartres" : "user@chartres";
+    const who = isAdmin ? "root@IAC" : "user@IAC";
     const div = document.createElement("div");
     div.innerHTML = `<span class="prompt">${who}</span>:<span class="prompt">~</span>$ ${escapeHtml(text)}`;
     termBody.insertBefore(div, termBody.lastElementChild);
@@ -905,7 +674,7 @@ printHint();
     if (command === "sudo -i") {
       awaitingPassword = true;
       passwordAttempts = 0;
-      printTerminalMessage("[sudo] password for user@chartres:");
+      printTerminalMessage("[sudo] password for user@IAC:");
       printHint(); // 👈 AJOUT
       rebuildPromptLine();
       return;
@@ -953,6 +722,31 @@ printHint();
     focusTerminalInput();
   }
 
+  function openLoginRoute() {
+    if (!terminalEl && !bootEl) startLoginSequence();
+  }
+
+  function isLoginRoute() {
+    return window.location.pathname.endsWith("/login") ||
+      window.location.hash.toLowerCase() === "#/login" ||
+      new URLSearchParams(window.location.search).has("login");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (isLoginRoute()) openLoginRoute();
+  });
+
+  let loginBuffer = "";
+  window.addEventListener("keydown", (event) => {
+    if (event.target.matches("input, textarea, select")) return;
+
+    loginBuffer = (loginBuffer + event.key).slice(-6).toLowerCase();
+    if (loginBuffer === "/login") {
+      loginBuffer = "";
+      openLoginRoute();
+    }
+  });
+
 })();
 
 
@@ -968,14 +762,12 @@ setInterval(() => {
       devtoolsOpen = true;
 
       console.log("%c👀 Tu cherches des secrets ?", "color: #00ffcc; font-size: 16px;");
-      console.log("%cVoici un classique...", "color: #ffaa00; font-size: 14px;");
-      console.log("%c↑ ↑ ↓ ↓ ← → ← → B A", "color: #ff0066; font-size: 18px; font-weight: bold;");
+      console.log("%cTape /login pour ouvrir l'interface d'élévation des privilèges.", "color: #ffaa00; font-size: 14px;");
     }
   } else {
     devtoolsOpen = false;
   }
 }, 500);
-console.log("%c[ACCESSING SECRET PROTOCOL...]", "color: green;");
 console.log("%cDecrypting input sequence...", "color: lime;");
 setTimeout(() => {
   console.log("%c↑ ↑ ↓ ↓ ← → ← → B A", "color: red; font-size: 20px;");
