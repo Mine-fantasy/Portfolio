@@ -196,7 +196,7 @@
       <div class="dash-head">
         <div class="dash-head-left">
           <span class="dash-live"><i></i>LIVE ANALYSIS</span>
-          <span class="dash-path mono">user@chartres:/virus/db<span id="dashSlug">#</span></span>
+          <span class="dash-path mono">user@IAC:/virus/db<span id="dashSlug">#</span></span>
         </div>
         <button class="dash-close" id="dashClose" type="button" aria-label="Fermer le dashboard">✕ Fermer</button>
       </div>
@@ -263,13 +263,13 @@
   <section class="term" id="term" aria-label="Terminal" hidden>
     <div class="term-panel" role="dialog" aria-modal="false" aria-labelledby="termTitle">
       <div class="term-head">
-        <span id="termTitle" class="mono">user@chartres:/virus$</span>
+        <span id="termTitle" class="mono">user@IAC:/virus$</span>
         <button class="term-close" id="termClose" type="button">Fermer</button>
       </div>
       <div class="term-body" id="termBody" tabindex="0">
         <div class="term-line">Bienvenue dans la console. Tape <span class="mono">help</span>.</div>
         <div class="term-input">
-          <span class="prompt mono">user@chartres</span><span class="mono">:$</span>
+          <span class="prompt mono">user@IAC</span><span class="mono">:$</span>
           <input id="termInput" class="term-in" type="text" autocomplete="off" spellcheck="false" />
         </div>
       </div>
@@ -476,7 +476,7 @@
 
     const inputLine = document.createElement("div");
     inputLine.className = "term-input";
-    inputLine.innerHTML = '<span class="prompt mono">user@chartres</span><span class="mono">:$</span> <input id="termInput" class="term-in" type="text" autocomplete="off" spellcheck="false" />';
+    inputLine.innerHTML = '<span class="prompt mono">user@IAC</span><span class="mono">:$</span> <input id="termInput" class="term-in" type="text" autocomplete="off" spellcheck="false" />';
     body.appendChild(inputLine);
     // rebind input
     const newInput = body.querySelector("#termInput");
@@ -490,7 +490,7 @@
     e.target.value = "";
     if(!cmd) return;
 
-    print("user@chartres:$ " + cmd);
+    print("user@IAC:$ " + cmd);
 
     const c = cmd.toLowerCase();
     if(c === "help"){
